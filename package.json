@@ -8,13 +8,23 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.5.0",
+    "axios": "^0.26.0",
+    "ethers": "^5.5.4",
+    "hardhat": "^2.9.0",
+    "ipfs-http-client": "^56.0.1",
     "next": "12.1.6",
+    "next-themes": "^0.2.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "tailwindcss": "^3.0.24"
+    "react-dropzone": "^12.0.4",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -22,10 +32,19 @@
     "@types/node": "17.0.40",
     "@types/react": "18.0.11",
     "@types/react-dom": "18.0.5",
-    "eslint": "8.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.17.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.1.6",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
-    "typescript": "4.7.3"
+    "typescript": "4.7.3",
+    "tailwindcss": "^3.0.24"
   }
 }
