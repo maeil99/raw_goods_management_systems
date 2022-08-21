@@ -14,7 +14,9 @@ const MyApp = ({
   <ThemeProvider attribute="class">
     <div className="dark:bg-nft-dark bg-white min-h-screen">
       <RgmsLayout>
-        <Component {...pageProps} />
+        <div className="pt-65">
+          <Component {...pageProps} />
+        </div>
       </RgmsLayout>
     </div>
     <Script

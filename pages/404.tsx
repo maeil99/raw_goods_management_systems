@@ -8,16 +8,24 @@ const FourOrFour = () => (
           <div className="col-sm-12 ">
             <div className="col-sm-10 col-sm-offset-1  text-center">
               <div className="four_zero_four_bg">
-                <h1 className="text-center dark:text-white dark:bg-nft-dark ">404</h1>
+                <h1 className="text-center text-nft-black-4">
+                  404
+                </h1>
               </div>
 
               <div className="contant_box_404">
-                <h3 className="h2 dark:text-white dark:bg-nft-dark">Look like you are lost</h3>
+                <h3 className="h2 text-nft-black-4 ">
+                  Look like you are lost
+                </h3>
 
-                <p className="dark:text-white dark:bg-nft-dark">the page you are looking for not available!</p>
+                <p className="text-nft-black-4 ">
+                  the page you are looking for not available!
+                </p>
 
-                <Link href="/" className="link_404">
-                  Back to the homepage...
+                <Link href="/">
+                  <div>
+                    <p className="link_404 text-nft-black-4 bg-nft-red-violet">Back to Homepage...</p>
+                  </div>
                 </Link>
               </div>
             </div>
