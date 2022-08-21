@@ -22,7 +22,7 @@ const ButtonGroup = ({ setActive }: IButtonGroup) => {
       classStyles="mx-2 rounded-xl"
       handleClick={() => {
         setActive('');
-        router.push('/create-nft');
+        router.push('/create-goods');
       }}
     />
   ) : (
@@ -51,7 +51,7 @@ const MenuItems = ({
       case 0:
         return '/';
       case 1:
-        return '/create-goods';
+        return '/listed-goods';
       case 2:
         return '/my-goods';
       default:

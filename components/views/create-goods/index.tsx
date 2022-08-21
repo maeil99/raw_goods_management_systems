@@ -1,7 +1,7 @@
 import React from 'react';
 
-const CreateGoods = () => (
-  <div>CreateGoods</div>
+const ListedGoods = () => (
+  <div>ListedGoods</div>
 );
 
-export default CreateGoods;
+export default ListedGoods;
