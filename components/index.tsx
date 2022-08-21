@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import Navbar from './Navbar/Navbar';
-import Footer from './Footer/Footer';
+import Navbar from './navigation/Navbar';
+import Footer from './navigation/Footer';
 
 export { Navbar, Footer };

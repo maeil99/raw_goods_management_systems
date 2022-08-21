@@ -1,9 +1,13 @@
+/* eslint-disable import/no-unresolved */
 import type { NextPage } from 'next';
+import { useTheme } from 'next-themes';
+import Home from '../components/views/home';
 
-const Home: NextPage = () => (
-  <div>
-    <h1>Hello World</h1>
-  </div>
-);
+const HomeLayout:NextPage = () => {
+  const { theme } = useTheme();
+  return (
+    <Home theme={theme || ''} />
+  );
+};
 
-export default Home;
+export default HomeLayout;
