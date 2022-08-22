@@ -10,6 +10,7 @@ interface IFormikControlProps extends IFormikProps {
   // eslint-disable-next-line react/require-default-props
   options?: IOptionsProps[];
   placeholder?:string;
+  unit?:string;
 }
 
 const FormikControl = (props: IFormikControlProps) => {

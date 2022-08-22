@@ -3,8 +3,15 @@
 export interface IFormFieldProps {
   productName: string;
   productCategory: string;
-  productPrice?: number;
+  productPrice: number;
   productDesc: string;
+  productWeight:number;
+  productDeliveryMethod:string;
+  productDeliveryPeriod:number;
+  // productPic:File | null;
+
+  // meat details
+  meatImport?: boolean;
   createdAt: string;
 }
 
@@ -38,5 +45,5 @@ export interface IFormikProps {
 
 export interface IOptionsProps {
   key: string;
-  value: string;
+  value: string | boolean;
 }

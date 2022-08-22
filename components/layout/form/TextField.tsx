@@ -8,10 +8,11 @@ import { FieldType, IFormikProps } from '../../../types/form.interface';
 
 interface ITextFieldProps extends IFormikProps {
   placeholder?: string;
+  unit?:string;
 }
 
 const TextField = (props: ITextFieldProps) => {
-  const { label, name, type = 'text', ...rest } = props;
+  const { label, name, type = 'text', unit = 'ETH', ...rest } = props;
   return (
     <div className="mt-10 w-full mb-5">
       <label
@@ -50,7 +51,7 @@ const TextField = (props: ITextFieldProps) => {
             {...rest}
           />
           <p className="flex-1 font-poppins dark:text-white text-nft-black-1 font-semibold text-xl">
-            ETH
+            {unit}
           </p>
         </div>
       )}
