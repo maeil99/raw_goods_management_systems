@@ -8,7 +8,7 @@ export interface IFormFieldProps {
   productWeight:number;
   productDeliveryMethod:string;
   productDeliveryPeriod:number;
-  // productPic:File | null;
+  productPicLink:File | null;
 
   // meat details
   meatImport?: boolean;

@@ -10,8 +10,6 @@ import {
 } from '../../../types/form.interface';
 import Button from '../../Button';
 import FormikControl from '../../layout/form/FormikControl';
-// TODO need to revamp the component
-// import UploadFile from '../../layout/form/UploadFile';
 
 interface IChickenProps {
   chickenOpt: IOptionsProps[];
@@ -94,7 +92,7 @@ const CreateGoods = () => {
     productWeight: 0,
     productDeliveryMethod: '',
     productDeliveryPeriod: 0,
-    // productPic: null,
+    productPicLink: null,
     meatImport: undefined,
     createdAt,
   };
@@ -128,9 +126,9 @@ const CreateGoods = () => {
   // submit
   const onSubmit = (values: IFormFieldProps) => {
     // sambung sini
-    // const { productPic } = values;
+    const { productPicLink: productPic } = values;
     console.log({ values });
-    // console.log(productPic);
+    console.log(`link gambar: ${productPic}`);
   };
 
   // product category option
@@ -186,12 +184,13 @@ const CreateGoods = () => {
               <h1 className="flex-1 font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
                 Create New Product
               </h1>
-              {/* <UploadFile
-                accept="image/*"
+              <FormikControl
+                control="uploadComponent"
                 label="Upload file"
                 name="productPic"
                 setFieldValue={formik.setFieldValue}
-              /> */}
+                accept="image/*"
+              />
               <FormikControl
                 control="textField"
                 label="Name"

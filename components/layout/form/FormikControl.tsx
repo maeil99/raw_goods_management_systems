@@ -4,17 +4,21 @@ import { IFormikProps, IOptionsProps } from '../../../types/form.interface';
 import SelectField from './SelectField';
 import TextField from './TextField';
 import SelectDatePicker from './SelectDatePicker';
+import UploadFile from './UploadFile';
 
 interface IFormikControlProps extends IFormikProps {
-  control: 'textField' | 'selectField' | 'dateField';
+  control: 'textField' | 'selectField' | 'dateField' | 'uploadComponent';
   // eslint-disable-next-line react/require-default-props
   options?: IOptionsProps[];
-  placeholder?:string;
-  unit?:string;
+  placeholder?: string;
+  unit?: string;
+  accept?: 'image/*' | 'application/*' | 'video/*';
+  maxSize?: number;
+  setFieldValue?: any;
 }
 
 const FormikControl = (props: IFormikControlProps) => {
-  const { control, ...rest } = props;
+  const { control, accept, maxSize, setFieldValue, ...rest } = props;
   switch (control) {
     case 'textField':
       return <TextField {...rest} />;
@@ -22,6 +26,15 @@ const FormikControl = (props: IFormikControlProps) => {
       return <SelectField {...rest} />;
     case 'dateField':
       return <SelectDatePicker {...rest} />;
+    case 'uploadComponent':
+      return (
+        <UploadFile
+          setFieldValue={setFieldValue}
+          accept={accept}
+          maxSize={maxSize}
+          {...rest}
+        />
+      );
     default:
       return null;
   }
