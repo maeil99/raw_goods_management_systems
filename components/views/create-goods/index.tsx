@@ -189,7 +189,7 @@ const CreateGoods = () => {
                 label="Upload file"
                 name="productPic"
                 setFieldValue={formik.setFieldValue}
-                accept="image/*"
+                maxSize={10 * 1024 * 1024}
               />
               <FormikControl
                 control="textField"

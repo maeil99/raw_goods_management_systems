@@ -12,13 +12,12 @@ interface IFormikControlProps extends IFormikProps {
   options?: IOptionsProps[];
   placeholder?: string;
   unit?: string;
-  accept?: 'image/*' | 'application/*' | 'video/*';
   maxSize?: number;
   setFieldValue?: any;
 }
 
 const FormikControl = (props: IFormikControlProps) => {
-  const { control, accept, maxSize, setFieldValue, ...rest } = props;
+  const { control, maxSize, setFieldValue, ...rest } = props;
   switch (control) {
     case 'textField':
       return <TextField {...rest} />;
@@ -30,7 +29,6 @@ const FormikControl = (props: IFormikControlProps) => {
       return (
         <UploadFile
           setFieldValue={setFieldValue}
-          accept={accept}
           maxSize={maxSize}
           {...rest}
         />

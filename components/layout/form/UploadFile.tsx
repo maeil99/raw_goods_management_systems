@@ -12,7 +12,6 @@ import { IFormikProps } from '../../../types/form.interface';
 import StorageClient from '../../../shared/utils/StorageClient';
 
 interface IUploadFileProps extends IFormikProps {
-  accept?: 'image/*' | 'application/*' | 'video/*';
   maxSize?: number;
   setFieldValue?: any;
 }
@@ -20,7 +19,6 @@ const maxSizeFile = 10 * 1024 * 1024;
 const UploadFile = ({
   label,
   name,
-  accept,
   maxSize = maxSizeFile,
   setFieldValue,
 }: IUploadFileProps) => {
@@ -34,15 +32,24 @@ const UploadFile = ({
     setIsVisible(true);
   }, []);
   const {
+    fileRejections,
+    acceptedFiles,
     getRootProps,
     getInputProps,
     isDragActive,
     isDragAccept,
     isDragReject,
+    open,
   } = useDropzone({
     onDrop: onDropFunction,
-    accept,
-    maxSize,
+    accept: {
+      'image/jpeg': ['.jpeg', '.png'],
+      'image/svg+xml': ['.svg'],
+      'image/gif': ['.gif'],
+      'image/webp': ['.webp'],
+    },
+    maxSize, // maximum file size
+    maxFiles: 1, // maximum file for uplaod
   });
 
   // setup styles for each theme
@@ -75,11 +82,32 @@ const UploadFile = ({
       <div className="mt-4">
         <div {...getRootProps()} className={fileStyles}>
           <input {...getInputProps()} />
+          {isDragAccept && (<p>The file will be accepted</p>)}
+          {isDragReject && (<p>The fill will be rejected</p>)}
+          {!isDragActive && (<p>Drop some files here ...</p>)}
           <div className="flexCenter flex-col text-center">
             {file !== null ? (
               <div>
                 <div className="py-3">
-                  <img src={URL.createObjectURL(file)} alt="asset_file" />
+                  {acceptedFiles.map((picture) => (
+                    <li key={picture.name} className="list-none">
+                      <img src={URL.createObjectURL(picture)} alt="asset_file" />
+                    </li>
+                  ))}
+
+                </div>
+                <div className="py-3">
+                  {fileRejections.map((picture) => (
+                    <li key={picture.file.name}>
+                      The following file is not accepted:
+                      {picture.file.name} - {picture.file.size} bytes
+                      <ul>
+                        {picture.errors.map((e) => (
+                          <li key={e.code}>{e.message}</li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
                 </div>
               </div>
             ) : (
@@ -113,17 +141,18 @@ const UploadFile = ({
           <div className="flexCenter space-x-4 text-center py-5">
             <button
               type="button"
-              className=" border border-nft-black-2 dark:border-white rounded-lg bg-yellow-500 text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white"
+              className=" nft-green border rounded-lg text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white"
               onClick={() => {
                 setFile(null);
                 setIsVisible(false);
+                open();
               }}
             >
               Change Image
             </button>
             <button
               type="button"
-              className="border border-nft-black-2 dark:border-white rounded-lg bg-green-500 text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white"
+              className="nft-cyan border rounded-lg bg-green-500 text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white"
               onClick={() => {
                 uploadImage();
                 setIsVisible(false);
