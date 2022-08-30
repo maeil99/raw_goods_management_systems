@@ -3,13 +3,14 @@
 // TODO need to revamp
 import React, { useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
-import { useTheme } from 'next-themes';
 import { useDropzone } from 'react-dropzone';
+import { ErrorMessage } from 'formik';
 
 // assets
 import images from '../../../assets';
 import { IFormikProps } from '../../../types/form.interface';
 import StorageClient from '../../../shared/utils/StorageClient';
+import TextError from './TextError';
 
 interface IUploadFileProps extends IFormikProps {
   maxSize?: number;
@@ -23,8 +24,8 @@ const UploadFile = ({
   setFieldValue,
 }: IUploadFileProps) => {
   const [file, setFile] = useState<File | null>(null);
+  const [isUpload, setIsUpload] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const { theme } = useTheme();
 
   // drop function
   const onDropFunction = useCallback(async (acceptedFile: any) => {
@@ -81,20 +82,25 @@ const UploadFile = ({
       </label>
       <div className="mt-4">
         <div {...getRootProps()} className={fileStyles}>
-          <input {...getInputProps()} />
-          {isDragAccept && (<p>The file will be accepted</p>)}
-          {isDragReject && (<p>The fill will be rejected</p>)}
-          {!isDragActive && (<p>Drop some files here ...</p>)}
+          <input {...getInputProps()} name={name} />
+          {isDragAccept && <p>The file will be accepted</p>}
+          {isDragReject && <p>The file will be rejected</p>}
+          {!isDragActive && file === null && <p>Drop some files here...</p>}
+          {!isDragActive && file !== null && (
+            <p>You can also click here to change image...</p>
+          )}
           <div className="flexCenter flex-col text-center">
             {file !== null ? (
               <div>
                 <div className="py-3">
                   {acceptedFiles.map((picture) => (
                     <li key={picture.name} className="list-none">
-                      <img src={URL.createObjectURL(picture)} alt="asset_file" />
+                      <img
+                        src={URL.createObjectURL(picture)}
+                        alt="asset_file"
+                      />
                     </li>
                   ))}
-
                 </div>
                 <div className="py-3">
                   {fileRejections.map((picture) => (
@@ -122,7 +128,7 @@ const UploadFile = ({
                     height={100}
                     objectFit="contain"
                     alt="file upload"
-                    className={theme === 'light' ? 'filter invert' : ''}
+                    className="filter invert dark:filter-none dark:invert-0 "
                   />
                 </div>
 
@@ -137,11 +143,15 @@ const UploadFile = ({
             )}
           </div>
         </div>
+        <ErrorMessage name={name} component={TextError} />
         {isVisible && (
           <div className="flexCenter space-x-4 text-center py-5">
             <button
+              disabled={isUpload}
               type="button"
-              className=" nft-green border rounded-lg text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white"
+              className={`${
+                isUpload ? 'bg-nft-gray-2' : 'nft-green'
+              } border rounded-lg text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white`}
               onClick={() => {
                 setFile(null);
                 setIsVisible(false);
@@ -152,13 +162,19 @@ const UploadFile = ({
             </button>
             <button
               type="button"
-              className="nft-cyan border rounded-lg bg-green-500 text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white"
+              className={`${
+                isUpload ? 'bg-nft-gray-2' : 'nft-cyan'
+              } border rounded-lg  text-sm minlg:text-lg py-2 px-6 minlg:px-8 font-poppins font-semibold text-white`}
               onClick={() => {
-                uploadImage();
-                setIsVisible(false);
+                setIsUpload(true);
+                uploadImage()
+                  .then(() => setIsUpload(false))
+                  .catch((e) => console.log(e))
+                  .finally(() => setIsVisible(false));
               }}
+              disabled={isUpload}
             >
-              Use This Image
+              {isUpload ? 'Uploading Image' : 'Use This Image'}
             </button>
           </div>
         )}

@@ -27,8 +27,8 @@ const SelectField = (props: ISelectProps) => {
         {...rest}
       >
         {options
-          && options.map((option) => (
-            <option key={option.value} value={option.value}>
+          && options.map((option, index) => (
+            <option key={`${index}_${option}`} value={option.value}>
               {option.key}
             </option>
           ))}
