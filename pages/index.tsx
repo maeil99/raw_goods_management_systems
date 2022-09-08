@@ -3,11 +3,9 @@ import type { NextPage } from 'next';
 import { useTheme } from 'next-themes';
 import Home from '../components/views/home';
 
-const HomeLayout:NextPage = () => {
+const HomeLayout: NextPage = () => {
   const { theme } = useTheme();
-  return (
-    <Home theme={theme || ''} />
-  );
+  return <Home theme={theme !== undefined ? theme : 'light'} />;
 };
 
 export default HomeLayout;

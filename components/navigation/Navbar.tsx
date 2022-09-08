@@ -18,15 +18,17 @@ const ButtonGroup = ({ setActive }: IButtonGroup) => {
   const hasConnected = true;
   return hasConnected ? (
     <Button
+      btnType="button"
       btnName="Create"
       classStyles="mx-2 rounded-xl"
       handleClick={() => {
         setActive('');
-        router.push('/create-nft');
+        router.push('/create-goods');
       }}
     />
   ) : (
     <Button
+      btnType="button"
       btnName="Connect"
       classStyles="mx-2 rounded-xl"
       handleClick={() => {}}
@@ -51,7 +53,7 @@ const MenuItems = ({
       case 0:
         return '/';
       case 1:
-        return '/create-goods';
+        return '/listed-goods';
       case 2:
         return '/my-goods';
       default:
@@ -161,7 +163,7 @@ const Navbar = () => {
             width={20}
             height={20}
             alt="close"
-            className={theme === 'light' ? 'filter invert' : ''}
+            className="filter invert dark:filter-none dark:invert-0"
           />
         ) : (
           <Image
@@ -171,7 +173,7 @@ const Navbar = () => {
             height={25}
             alt="menu"
             onClick={() => setIsOpen(true)}
-            className={theme === 'light' ? 'filter invert' : ''}
+            className="filter invert dark:filter-none dark:invert-0"
           />
         )}
         {isOpen && (
