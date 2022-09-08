@@ -89,12 +89,28 @@ const MeatFieldForm = ({ IsMeatImportAns }: IMeatProps) => (
     />
   </>
 );
-
+// https://ms.wikipedia.org/wiki/Makanan_laut
 const seafoodTypes: IOptionsProps[] = [
   { key: 'Select one', value: '' },
   { key: 'Fish', value: 'fish' },
-  { key: 'Mollusca', value: 'Mollusca' },
+  { key: 'Mollusca', value: 'mollusca' },
   { key: 'Crustacea', value: 'crustacea' },
+];
+
+// mollusca types opt
+const molluscaLists: IOptionsProps[] = [
+  { key: 'Select one', value: '' },
+  { key: 'Shells', value: 'shells' },
+  { key: 'Sea snail', value: 'sea_snail' },
+];
+
+// crustacea types opt
+const crustaceaLists: IOptionsProps[] = [
+  { key: 'Select one', value: '' },
+  { key: 'Prawn', value: 'prawn' },
+  { key: 'Crab', value: 'crab' },
+  { key: 'Crayfish', value: 'crayfish' },
+  { key: 'Kril', value: 'kril' },
 ];
 
 // fish types option
@@ -145,7 +161,7 @@ const SeafoodFieldForm = ({ seafoodTypesAns }: ISeafoodProps) => (
         <FormikControl
           control="selectField"
           label="List of fish"
-          name="fishType"
+          name="fishList"
           options={fishLists}
           type={FieldType.TEXT}
         />
@@ -171,6 +187,24 @@ const SeafoodFieldForm = ({ seafoodTypesAns }: ISeafoodProps) => (
           type={FieldType.TEXT}
         />
       </>
+    )}
+    {seafoodTypesAns === 'mollusca' && (
+      <FormikControl
+        control="selectField"
+        label="List of mollusca"
+        name="molluscaList"
+        options={molluscaLists}
+        type={FieldType.TEXT}
+      />
+    )}
+    {seafoodTypesAns === 'crustacea' && (
+      <FormikControl
+        control="selectField"
+        label="List of crustacea"
+        name="crustaceaList"
+        options={crustaceaLists}
+        type={FieldType.TEXT}
+      />
     )}
   </>
 );
