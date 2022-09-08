@@ -2,27 +2,30 @@
 /* eslint-disable import/no-unresolved */
 import { Form, Formik } from 'formik';
 // import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
-import { IFormFieldProps, ISubmitForm } from '../../../types/form.interface';
+import { IFormFieldProps } from '../../../types/form.interface';
 import Button from '../../Button';
-import ContactDetails from './ContactDetails';
-import {
-  ChickenFieldForm,
-  SeafoodFieldForm,
-  MeatFieldForm,
-} from './GoodsDetails';
+// TODO un comment later
+// import ContactDetails from './ContactDetails';
+// import {
+//   ChickenFieldForm,
+//   SeafoodFieldForm,
+//   MeatFieldForm,
+// } from './GoodsDetails';
 import ProductDetails from './ProductDetails';
 
 const CreateGoods = () => {
   const createdAt = new Date().toJSON();
-  const [isSubmit, setIsSubmit] = useState<ISubmitForm>();
+  // TODO un comment later
+  // const [isSubmit, setIsSubmit] = useState<ISubmitForm>();
   // const router = useRouter();
 
   // handle pages
-  const [isProductPage, setIsProductPage] = useState(true);
-  const [isContactPage, setIsContactPage] = useState(false);
-  const [isProductDetailPage, setIsProductDetailPage] = useState(false);
+  // TODO un comment later
+  // const [isProductPage, setIsProductPage] = useState(true);
+  // const [isContactPage, setIsContactPage] = useState(false);
+  // const [isProductDetailPage, setIsProductDetailPage] = useState(false);
 
   // initial values
   const initialValue: IFormFieldProps = {
@@ -35,26 +38,31 @@ const CreateGoods = () => {
     productDeliveryPeriod: 0,
     productPicLink: null,
     // contact
-    contactName: '',
-    contactAddress: '',
-    contactEmail: '',
-    contactMOC: '',
-    contactPhoneNo: '',
+    // TODO un comment later
+    // contactName: '',
+    // contactAddress: '',
+    // contactEmail: '',
+    // contactMOC: '',
+    // contactPhoneNo: '',
     // chicken
-    chickenHormone: '',
-    chickenOption: '',
-    meatAnimalTypes: '',
+    // TODO un comment later
+    // chickenHormone: '',
+    // chickenOption: '',
+    // meatAnimalTypes: '',
     // meat
-    meatImport: undefined,
-    meatCountryImport: '',
-    meatHormone: '',
+    // TODO un comment later
+    // meatImport: undefined,
+    // meatCountryImport: '',
+    // meatHormone: '',
     // seafood
-    seafoodTypes: '',
+    // TODO un comment later
+    // seafoodTypes: '',
     createdAt,
   };
 
   // Phone regex
-  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  // TODO un comment later
+  // const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   // validation schema
   const validationSchema = Yup.object({
@@ -82,78 +90,83 @@ const CreateGoods = () => {
       .typeError('you must specify a number')
       .moreThan(0, 'delivery period must be greater than 0'),
     // contact details
-    contactName: Yup.string().required('This field is required'),
-    contactAddress: Yup.string().required('This field is required'),
-    contactEmail: Yup.string()
-      .email('Invalid email')
-      .required('This field is required'),
-    contactMOC: Yup.string().required('This field is required'),
-    contactPhoneNo: Yup.string()
-      .when('contactMOC', {
-        is: 'telephonemoc',
-        then: Yup.string().required('Required'),
-      })
-      .matches(phoneRegExp, 'Phone number is not valid'),
+    // TODO un comment later
+    // contactName: Yup.string().required('This field is required'),
+    // contactAddress: Yup.string().required('This field is required'),
+    // contactEmail: Yup.string()
+    //   .email('Invalid email')
+    //   .required('This field is required'),
+    // contactMOC: Yup.string().required('This field is required'),
+    // contactPhoneNo: Yup.string()
+    //   .when('contactMOC', {
+    //     is: 'telephonemoc',
+    //     then: Yup.string().required('Required'),
+    //   })
+    //   .matches(phoneRegExp, 'Phone number is not valid'),
     // chicken
-    chickenHormone: Yup.string().when('productCategory', {
-      is: 'chicken',
-      then: Yup.string().required('This field is required'),
-    }),
-    chickenOption: Yup.string().when('productCategory', {
-      is: 'chicken',
-      then: Yup.string().required('Please choose chicken part'),
-    }),
+    // TODO un comment later
+    // chickenHormone: Yup.string().when('productCategory', {
+    //   is: 'chicken',
+    //   then: Yup.string().required('This field is required'),
+    // }),
+    // chickenOption: Yup.string().when('productCategory', {
+    //   is: 'chicken',
+    //   then: Yup.string().required('Please choose chicken part'),
+    // }),
     // meat
-    meatAnimalTypes: Yup.string().when('productCategory', {
-      is: 'meat',
-      then: Yup.string().required('This field is required'),
-    }),
-    meatImport: Yup.string().when('productCategory', {
-      is: 'meat',
-      then: Yup.string().required('This field is required'),
-    }),
-    meatCountryImport: Yup.string().when('meatImport', {
-      is: 'true',
-      then: Yup.string().required('This field is required'),
-    }),
-    meatHormone: Yup.string().when('productCategory', {
-      is: 'meat',
-      then: Yup.string().required('This field is required'),
-    }),
+    // TODO un comment later
+    // meatAnimalTypes: Yup.string().when('productCategory', {
+    //   is: 'meat',
+    //   then: Yup.string().required('This field is required'),
+    // }),
+    // meatImport: Yup.string().when('productCategory', {
+    //   is: 'meat',
+    //   then: Yup.string().required('This field is required'),
+    // }),
+    // meatCountryImport: Yup.string().when('meatImport', {
+    //   is: 'true',
+    //   then: Yup.string().required('This field is required'),
+    // }),
+    // meatHormone: Yup.string().when('productCategory', {
+    //   is: 'meat',
+    //   then: Yup.string().required('This field is required'),
+    // }),
     // seafood
-    seafoodTypes: Yup.string().when('productCategory', {
-      is: 'seafood',
-      then: Yup.string().required('Please choose types of seafood'),
-    }),
+    // TODO un comment later
+    // seafoodTypes: Yup.string().when('productCategory', {
+    //   is: 'seafood',
+    //   then: Yup.string().required('Please choose types of seafood'),
+    // }),
   });
 
-  const submitForm = (values: IFormFieldProps) => {
-    if (values.productCategory === 'chicken') {
-      setIsSubmit({
-        product: {
-          name: values.productName,
-          category: values.productCategory,
-          price: values.productPrice,
-          weight: values.productWeight,
-          description: values.productDesc,
-          deliveryMethod: values.productDeliveryMethod,
-          deliveryPeriod: values.productDeliveryPeriod,
-          imageURI: values.productPicLink,
-          createdAt: values.createdAt,
-        },
-        productDetails: {
-          chickenParts: values.chickenOption ? values.chickenOption : '',
-          isChickenHormone: values.chickenHormone === 'true',
-        },
-        contactDetails: {
-          name: values.contactName,
-          email: values.contactEmail,
-          homeAddress: values.contactAddress,
-          phone: values.contactPhoneNo,
-        },
-      });
-    }
-  };
+  // TODO un comment later
+  // const submitForm = (values: IFormFieldProps) => {
+  //   if (values.productCategory === 'chicken') {
+  //     setIsSubmit({
+  //       product: {
+  //         name: values.productName,
+  //         category: values.productCategory,
+  //         price: values.productPrice,
+  //         weight: values.productWeight,
+  //         description: values.productDesc,
+  //         deliveryMethod: values.productDeliveryMethod,
+  //         deliveryPeriod: values.productDeliveryPeriod,
+  //         imageURI: values.productPicLink,
+  //         createdAt: values.createdAt,
+  //       },
+  //       productDetails: {
+  //         chickenParts: values.chickenOption ? values.chickenOption : '',
+  //         isChickenHormone: values.chickenHormone === 'true',
+  //       },
+  //       contactDetails: {
+  //         name: values.contactName,
+  //         email: values.contactEmail,
+  //         homeAddress: values.contactAddress,
+  //         phone: values.contactPhoneNo,
+  //       },
+  //     });
+  //   }
+  // };
 
   // submit
   const onSubmit = (values: IFormFieldProps) => {
@@ -161,8 +174,9 @@ const CreateGoods = () => {
     const { productPicLink } = values;
     console.log(`link gambar: ${productPicLink}`);
     console.log({ values });
-    submitForm(values);
-    console.log('Submitted Data: ', isSubmit);
+    // submitForm(values);
+    // TODO un comment later
+    // console.log('Submitted Data: ', isSubmit);
     // setIsProductDetailPage(false);
     // router.push('/');
   };
@@ -180,7 +194,16 @@ const CreateGoods = () => {
               <h1 className="flex-1 font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
                 Create New Product
               </h1>
-              {isProductPage && (
+              <ProductDetails setFieldValueFormik={formik.setFieldValue} />
+              <div className="mt-7 w-full flex justify-end">
+                <Button
+                  btnName="Create Product"
+                  classStyles="rounded-xl"
+                  btnType="submit"
+                  disabled={!formik.isValid}
+                />
+              </div>
+              {/* {isProductPage && (
                 <>
                   <ProductDetails setFieldValueFormik={formik.setFieldValue} />
                   <div className="mt-7 w-full flex justify-end">
@@ -195,8 +218,8 @@ const CreateGoods = () => {
                     />
                   </div>
                 </>
-              )}
-              {isContactPage && (
+              )} */}
+              {/* {isContactPage && (
                 <>
                   <ContactDetails mocAns={formik.values.contactMOC} />
                   <div className="mt-7 w-full flex justify-end space-x-3">
@@ -227,8 +250,8 @@ const CreateGoods = () => {
                     </div>
                   )}
                 </>
-              )}
-              {isProductDetailPage && (
+              )} */}
+              {/* {isProductDetailPage && (
                 <>
                   {formik.values.productCategory === 'chicken' && (
                     <ChickenFieldForm />
@@ -237,8 +260,8 @@ const CreateGoods = () => {
                     <MeatFieldForm
                       IsMeatImportAns={`${formik.values.meatImport}`}
                     />
-                  )}
-                  {formik.values.productCategory === 'seafood' && (
+                  )} */}
+              {/* {formik.values.productCategory === 'seafood' && (
                     <SeafoodFieldForm
                       seafoodTypesAns={
                         formik.values.seafoodTypes
@@ -277,7 +300,7 @@ const CreateGoods = () => {
                     </div>
                   )}
                 </>
-              )}
+              )} */}
             </div>
           </div>
         </Form>

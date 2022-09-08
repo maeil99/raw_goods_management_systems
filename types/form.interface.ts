@@ -18,24 +18,28 @@ export interface IFormFieldProps {
   productPicLink: File | null;
 
   // contact details
-  contactName: string;
-  contactAddress: string;
-  contactEmail: string;
-  contactMOC: string;
-  contactPhoneNo?: string;
+  // TODO un comment later
+  // contactName: string;
+  // contactAddress: string;
+  // contactEmail: string;
+  // contactMOC: string;
+  // contactPhoneNo?: string;
 
   // chicken details
-  chickenOption?: string;
-  chickenHormone?: string;
+  // TODO un comment later
+  // chickenOption?: string;
+  // chickenHormone?: string;
 
   // meat details
-  meatAnimalTypes?: string;
-  meatImport?: boolean;
-  meatCountryImport?: string;
-  meatHormone?: string;
+  // TODO un comment later
+  // meatAnimalTypes?: string;
+  // meatImport?: boolean;
+  // meatCountryImport?: string;
+  // meatHormone?: string;
 
+  // TODO un comment later
   // seafood details
-  seafoodTypes?: string;
+  // seafoodTypes?: string;
 
   createdAt: string;
 }
