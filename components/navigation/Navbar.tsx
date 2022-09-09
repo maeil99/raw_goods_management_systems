@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/no-unresolved */
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useContext } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,6 +8,7 @@ import router from 'next/router';
 
 import images from '../../assets';
 import Button from '../Button';
+import { GoodsContext } from '../../context/GoodsContext';
 
 // Button Group
 interface IButtonGroup {
@@ -15,8 +16,9 @@ interface IButtonGroup {
 }
 
 const ButtonGroup = ({ setActive }: IButtonGroup) => {
-  const hasConnected = true;
-  return hasConnected ? (
+  const { connectWallet, currentAccount } = useContext(GoodsContext);
+  // const hasConnected = true;
+  return currentAccount ? (
     <Button
       btnType="button"
       btnName="Create"
@@ -31,7 +33,7 @@ const ButtonGroup = ({ setActive }: IButtonGroup) => {
       btnType="button"
       btnName="Connect"
       classStyles="mx-2 rounded-xl"
-      handleClick={() => {}}
+      handleClick={connectWallet}
     />
   );
 };
