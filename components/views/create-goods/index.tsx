@@ -1,9 +1,10 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/no-unresolved */
 import { Form, Formik } from 'formik';
-// import { useRouter } from 'next/router';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import * as Yup from 'yup';
+import { GoodsContext } from '../../../context/GoodsContext';
 import { IFormFieldProps } from '../../../types/form.interface';
 import Button from '../../Button';
 // TODO un comment later
@@ -17,9 +18,10 @@ import ProductDetails from './ProductDetails';
 
 const CreateGoods = () => {
   const createdAt = new Date().toJSON();
+  const { createGoods } = useContext(GoodsContext);
   // TODO un comment later
   // const [isSubmit, setIsSubmit] = useState<ISubmitForm>();
-  // const router = useRouter();
+  const router = useRouter();
 
   // handle pages
   // TODO un comment later
@@ -175,6 +177,8 @@ const CreateGoods = () => {
     console.log(`link gambar: ${productPicLink}`);
     console.log({ values });
     // submitForm(values);
+    if (!createGoods || productPicLink === null) return;
+    createGoods(values, productPicLink, router);
     // TODO un comment later
     // console.log('Submitted Data: ', isSubmit);
     // setIsProductDetailPage(false);

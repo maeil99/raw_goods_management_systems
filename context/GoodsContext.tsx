@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-unresolved */
 import React, { useState, useEffect } from 'react';
-import web3Modal from 'web3modal';
+import Web3Modal from 'web3modal';
 import { ethers } from 'ethers';
-import axios from 'axios';
-// eslint-disable-next-line import/no-unresolved
+// import axios from 'axios';
 import { create as ipfsHTTPClient } from 'ipfs-http-client';
+import { NextRouter } from 'next/router';
 
 import { MarketAddress, MarketAddressABI } from './constant';
+import { IFormFieldProps } from '../types/form.interface';
 
 interface IContextProps {
   children: React.ReactNode;
@@ -15,9 +18,21 @@ interface ICreateContextProps {
   goodsCurrency: string;
   currentAccount: string;
   connectWallet?: () => Promise<void>;
-  // eslint-disable-next-line no-unused-vars
   uploadToIPFS?: (file: File) => Promise<string | undefined>;
+  createSale?: (
+    url: string,
+    formInputPrice: string,
+    id?: string,
+    isReselling?: boolean
+  ) => Promise<void>;
+  createGoods?: (
+    formInput: IFormFieldProps,
+    fileUrl: string,
+    router: NextRouter
+  ) => Promise<void>;
+  // fetchGoods?: () => Promise<IFormattedGoods[]>;
 }
+
 const projectId = process.env.NODE_ENV === 'development'
   ? process.env.NEXT_PUBLIC_PROJECT_ID
   : '2Et1N03iLLod4TEyJJ9Lf8dycqW';
@@ -38,11 +53,19 @@ const dedicatedEndPoint = process.env.NODE_ENV === 'development'
   ? process.env.NEXT_PUBLIC_DEDICATED_GATEWAY_DEV
   : 'https://rgsm-dev.infura-ipfs.io';
 
+const fetchContract = (
+  signerOrProvider:
+    | ethers.providers.JsonRpcSigner
+    | ethers.providers.JsonRpcProvider,
+): ethers.Contract => new ethers.Contract(MarketAddress, MarketAddressABI, signerOrProvider);
+
 export const GoodsContext = React.createContext<ICreateContextProps>({
   goodsCurrency: '',
   currentAccount: '',
   connectWallet: undefined,
   uploadToIPFS: undefined,
+  createGoods: undefined,
+  createSale: undefined,
 });
 
 export const GoodsProvider = ({ children }: IContextProps) => {
@@ -85,9 +108,83 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     }
   };
 
+  const createSale = async (
+    url: string,
+    formInputPrice: string,
+    id?: string,
+    isReselling = false,
+  ) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const price = ethers.utils.parseUnits(formInputPrice, 'ether');
+    const contract = fetchContract(signer);
+
+    const listingPrice = await contract.getListingPrice();
+    const transaction = isReselling
+      ? await contract.resellToken(id, price, {
+        value: listingPrice.toString(),
+      })
+      : await contract.createToken(url, price, {
+        value: listingPrice.toString(),
+      });
+    await transaction.wait();
+  };
+
+  // create product
+  const createGoods = async (
+    formInput: IFormFieldProps,
+    fileUrl: string,
+    router: NextRouter,
+  ) => {
+    const {
+      productName,
+      productDesc,
+      productPrice,
+      createdAt,
+      productCategory,
+      productDeliveryMethod,
+      productDeliveryPeriod,
+      productPicLink,
+    } = formInput;
+    if (!formInput || !fileUrl) return;
+    const data = JSON.stringify({
+      product: {
+        name: productName,
+        description: productDesc,
+        price: productPrice,
+        category: productCategory,
+        deliveryMethod: productDeliveryMethod,
+        deliveryPeriod: productDeliveryPeriod,
+        image: productPicLink,
+        createdAt,
+      },
+    });
+    console.log('create goods data: ', data);
+    try {
+      const added = await client.add(data);
+      const url = `${dedicatedEndPoint}/ipfs/${added.path}`;
+      console.log('url from create goods ', url);
+      const price = productPrice.toString();
+      await createSale(url, price);
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+      console.log('Error uploading file to IPFS');
+    }
+  };
   return (
     <GoodsContext.Provider
-      value={{ goodsCurrency, connectWallet, currentAccount, uploadToIPFS }}
+      value={{
+        goodsCurrency,
+        connectWallet,
+        currentAccount,
+        uploadToIPFS,
+        createGoods,
+        createSale,
+      }}
     >
       {children}
     </GoodsContext.Provider>

@@ -1,6 +1,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-unused-vars */
 
+import { BigNumber } from 'ethers';
 import { IChickenProps } from './chicken.interface';
 import { IContactDetailsProps } from './contact.interface';
 import { IMeatProps } from './meat.interface';
@@ -15,7 +16,7 @@ export interface IFormFieldProps {
   productWeight: number;
   productDeliveryMethod: string;
   productDeliveryPeriod: number;
-  productPicLink: File | null;
+  productPicLink: string | null;
 
   // contact details
   // TODO un comment later

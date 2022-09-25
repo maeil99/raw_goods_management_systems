@@ -25,6 +25,9 @@ contract GoodsMarketplace is ERC721URIStorage {
     // charge a listing fee.
     uint256 listingPrice = 0.025 ether;
 
+    uint256 ownerCommissionPercentage = 15;
+    uint256 creatorCommissionPercentage = 1000 - ownerCommissionPercentage;
+
     // declaring the owner of the contract
     // owner earns a commision on every item sold
     address payable owner;
@@ -56,6 +59,30 @@ contract GoodsMarketplace is ERC721URIStorage {
     // the owner of the contract is the one deploying it
     constructor() ERC721("Metaverse Tokens", "METT") {
         owner = payable(msg.sender);
+    }
+
+    function getOwnerShare(uint256 x) private view returns (uint256) {
+        return (x / 1000) * ownerCommissionPercentage;
+    }
+
+    function getCreatorShare(uint256 x) private view returns (uint256) {
+        return (x / 1000) * creatorCommissionPercentage;
+    }
+
+    function updateOwnerCommissionPercentage(uint256 _ownerCommissionPercentage)
+        public
+        payable
+    {
+        require(
+            owner == msg.sender,
+            "Only marketplace owner can update the listing price"
+        );
+
+        ownerCommissionPercentage = _ownerCommissionPercentage;
+    }
+
+    function getOwnerCommissionPercentage() public view returns (uint256) {
+        return ownerCommissionPercentage;
     }
 
     /* Updates the listing price of the contract */
