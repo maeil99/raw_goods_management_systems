@@ -6,6 +6,20 @@ export interface IProductProps {
   weight: number;
   deliveryMethod: string;
   deliveryPeriod: number;
-  imageURI: File | null;
+  imageURI: string;
+  // imageURI: File | null;
   createdAt: string;
+}
+
+export interface IFetchProductProps {
+  product: IProductProps;
+}
+
+export interface IFormattedGoods {
+  price: string;
+  tokenId: number;
+  seller: string;
+  owner: string;
+  tokenURI: any;
+  product: IProductProps;
 }

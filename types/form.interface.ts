@@ -78,8 +78,8 @@ export interface IOptionsProps {
   value: string | number | readonly string[];
 }
 
-export interface ISubmitForm {
-  product: IProductProps;
-  contactDetails: IContactDetailsProps;
-  productDetails: IChickenProps | IMeatProps;
-}
+// export interface ISubmitForm {
+//   product: IProductProps;
+//   contactDetails: IContactDetailsProps;
+//   productDetails: IChickenProps | IMeatProps;
+// }

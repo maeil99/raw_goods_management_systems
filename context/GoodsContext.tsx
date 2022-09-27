@@ -2,16 +2,27 @@
 /* eslint-disable import/no-unresolved */
 import React, { useState, useEffect } from 'react';
 import Web3Modal from 'web3modal';
-import { ethers } from 'ethers';
-// import axios from 'axios';
+import { BigNumber, ethers } from 'ethers';
+import axios from 'axios';
 import { create as ipfsHTTPClient } from 'ipfs-http-client';
 import { NextRouter } from 'next/router';
 
 import { MarketAddress, MarketAddressABI } from './constant';
 import { IFormFieldProps } from '../types/form.interface';
+import {
+  IFetchProductProps,
+  IFormattedGoods,
+} from '../types/product.interface';
 
 interface IContextProps {
   children: React.ReactNode;
+}
+
+interface IRawGoodsData {
+  tokenId: BigNumber;
+  seller: string;
+  owner: string;
+  price: BigNumber;
 }
 
 interface ICreateContextProps {
@@ -30,6 +41,7 @@ interface ICreateContextProps {
     fileUrl: string,
     router: NextRouter
   ) => Promise<void>;
+  fetchGoods?: () => Promise<IFormattedGoods[]>;
   // fetchGoods?: () => Promise<IFormattedGoods[]>;
 }
 
@@ -66,6 +78,7 @@ export const GoodsContext = React.createContext<ICreateContextProps>({
   uploadToIPFS: undefined,
   createGoods: undefined,
   createSale: undefined,
+  fetchGoods: undefined,
 });
 
 export const GoodsProvider = ({ children }: IContextProps) => {
@@ -158,7 +171,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         category: productCategory,
         deliveryMethod: productDeliveryMethod,
         deliveryPeriod: productDeliveryPeriod,
-        image: productPicLink,
+        imageURI: productPicLink,
         createdAt,
       },
     });
@@ -175,6 +188,48 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       console.log('Error uploading file to IPFS');
     }
   };
+  // fetch all goods available in marketplace
+  const fetchGoods = async (): Promise<IFormattedGoods[]> => {
+    const provider = new ethers.providers.JsonRpcProvider();
+    const contract = fetchContract(provider);
+    const rawData = await contract.fetchMarketItems();
+
+    const items = await Promise.all(
+      (rawData as IRawGoodsData[]).map(
+        async ({ tokenId, seller, owner, price: unformattedPrice }) => {
+          const tokenURI = await contract.tokenURI(tokenId);
+          const { data } = await axios.get<IFetchProductProps>(tokenURI);
+          const { product } = data;
+          // const { category, createdAt, deliveryMethod, deliveryPeriod, description, imageURI, name, weight } = product;
+          // console.log('metadata: ', data);
+          // console.table(product);
+          const price = ethers.utils.formatUnits(
+            unformattedPrice.toString(),
+            'ether',
+          );
+          return {
+            price,
+            tokenId: tokenId.toNumber(),
+            seller,
+            owner,
+            tokenURI,
+            product,
+            // name,
+            // category,
+            // description,
+            // weight,
+            // deliveryMethod,
+            // deliveryPeriod,
+            // imageURI,
+            // // imageURI: File | null;
+            // createdAt,
+          };
+        },
+      ),
+    );
+    return items;
+  };
+
   return (
     <GoodsContext.Provider
       value={{
@@ -184,6 +239,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         uploadToIPFS,
         createGoods,
         createSale,
+        fetchGoods,
       }}
     >
       {children}
