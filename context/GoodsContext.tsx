@@ -25,6 +25,11 @@ interface IRawGoodsData {
   price: BigNumber;
 }
 
+export interface IBuyGoods {
+  goodsPrice: string;
+  tokenId: string;
+}
+
 interface ICreateContextProps {
   goodsCurrency: string;
   currentAccount: string;
@@ -42,6 +47,7 @@ interface ICreateContextProps {
     router: NextRouter
   ) => Promise<void>;
   fetchGoods?: () => Promise<IFormattedGoods[]>;
+  buyGoods?: (goods: IBuyGoods) => Promise<void>;
   // fetchGoods?: () => Promise<IFormattedGoods[]>;
 }
 
@@ -79,6 +85,7 @@ export const GoodsContext = React.createContext<ICreateContextProps>({
   createGoods: undefined,
   createSale: undefined,
   fetchGoods: undefined,
+  buyGoods: undefined,
 });
 
 export const GoodsProvider = ({ children }: IContextProps) => {
@@ -223,6 +230,22 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     return items;
   };
 
+  const buyGoods = async (goods: IBuyGoods) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = fetchContract(signer);
+    console.log('goods from buyGoods function: ', goods);
+    const price = ethers.utils.parseUnits(goods.goodsPrice.toString(), 'ether');
+
+    const transaction = await contract.createMarketSale(goods.tokenId, {
+      value: price,
+    });
+
+    await transaction.wait();
+  };
+
   return (
     <GoodsContext.Provider
       value={{
@@ -233,6 +256,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         createGoods,
         createSale,
         fetchGoods,
+        buyGoods,
       }}
     >
       {children}

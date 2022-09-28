@@ -6,5 +6,6 @@ import Loader from './Loader';
 import SearchBar from './SearchBar';
 import GoodsCard from './GoodsCard';
 import CreatorCard from './CreatorCard';
+import Modal from './Modal';
 
-export { Navbar, Footer, Banner, Loader, SearchBar, GoodsCard, CreatorCard };
+export { Navbar, Footer, Banner, Loader, SearchBar, GoodsCard, CreatorCard, Modal };
