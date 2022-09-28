@@ -4,5 +4,7 @@ import Footer from './navigation/Footer';
 import Banner from './Banner';
 import Loader from './Loader';
 import SearchBar from './SearchBar';
+import GoodsCard from './GoodsCard';
+import CreatorCard from './CreatorCard';
 
-export { Navbar, Footer, Banner, Loader, SearchBar };
+export { Navbar, Footer, Banner, Loader, SearchBar, GoodsCard, CreatorCard };
