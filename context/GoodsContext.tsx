@@ -9,10 +9,7 @@ import { NextRouter } from 'next/router';
 
 import { MarketAddress, MarketAddressABI } from './constant';
 import { IFormFieldProps } from '../types/form.interface';
-import {
-  IFetchProductProps,
-  IFormattedGoods,
-} from '../types/product.interface';
+import { IFetchGoodsProps, IFormattedGoods } from '../types/goods.interface';
 
 interface IContextProps {
   children: React.ReactNode;
@@ -169,6 +166,11 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       productDeliveryMethod,
       productDeliveryPeriod,
       productPicLink,
+      contactName,
+      contactAddress,
+      contactEmail,
+      contactMOC,
+      contactPhoneNo,
     } = formInput;
     if (!formInput || !fileUrl) return;
     const data = JSON.stringify({
@@ -183,6 +185,13 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         imageURI: productPicLink,
         createdAt,
       },
+      contact: {
+        contactName,
+        contactAddress,
+        contactEmail,
+        contactMOC,
+        contactPhoneNo: contactPhoneNo || undefined,
+      },
     });
     console.log('create goods data: ', data);
     try {
@@ -191,7 +200,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       console.log('url from create goods ', url);
       const price = productPrice.toString();
       await createSale(url, price);
-      router.push('/');
+      // router.push('/');
     } catch (error) {
       console.log(error);
       console.log('Error uploading file to IPFS');
@@ -207,8 +216,11 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       (rawData as IRawGoodsData[]).map(
         async ({ tokenId, seller, owner, price: unformattedPrice }) => {
           const tokenURI = await contract.tokenURI(tokenId);
-          const { data } = await axios.get<IFetchProductProps>(tokenURI);
-          const { product } = data;
+          const metadata = await axios.get<IFetchGoodsProps>(tokenURI);
+          const { data } = await axios.get<IFetchGoodsProps>(tokenURI);
+          console.log('metadata: ', metadata);
+          const { product, contact } = data;
+          console.log('contact: ', contact);
           // const { category, createdAt, deliveryMethod, deliveryPeriod, description, imageURI, name, weight } = product;
           // console.log('metadata: ', data);
           // console.table(product);
@@ -223,6 +235,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
             owner,
             tokenURI,
             product,
+            contact,
           };
         },
       ),

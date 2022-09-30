@@ -10,16 +10,3 @@ export interface IProductProps {
   // imageURI: File | null;
   createdAt: string;
 }
-
-export interface IFetchProductProps {
-  product: IProductProps;
-}
-
-export interface IFormattedGoods {
-  price: string;
-  tokenId: number;
-  seller: string;
-  owner: string;
-  tokenURI: any;
-  product: IProductProps;
-}

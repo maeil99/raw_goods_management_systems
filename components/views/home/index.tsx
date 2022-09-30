@@ -17,7 +17,6 @@ import { shortenAddress } from '../../../shared/utils/shortenAddress';
 // eslint-disable-next-line import/no-unresolved
 import { GoodsContext } from '../../../context/GoodsContext';
 // eslint-disable-next-line import/no-unresolved
-import { IFormattedGoods } from '../../../types/product.interface';
 // eslint-disable-next-line import/no-unresolved
 import { ActiveSelectOption } from '../../SearchBar';
 // eslint-disable-next-line import/no-unresolved
@@ -26,6 +25,8 @@ import {
   ITopCreator,
 // eslint-disable-next-line import/no-unresolved
 } from '../../../shared/utils/getTopCreators';
+// eslint-disable-next-line import/no-unresolved
+import { IFormattedGoods } from '../../../types/goods.interface';
 
 const Home: NextPage = () => {
   const { fetchGoods } = useContext(GoodsContext);

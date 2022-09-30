@@ -2,11 +2,12 @@
 /* eslint-disable import/no-unresolved */
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import * as Yup from 'yup';
 import { GoodsContext } from '../../../context/GoodsContext';
 import { IFormFieldProps } from '../../../types/form.interface';
 import Button from '../../Button';
+import ContactDetails from './ContactDetails';
 // TODO un comment later
 // import ContactDetails from './ContactDetails';
 // import {
@@ -25,8 +26,8 @@ const CreateGoods = () => {
 
   // handle pages
   // TODO un comment later
-  // const [isProductPage, setIsProductPage] = useState(true);
-  // const [isContactPage, setIsContactPage] = useState(false);
+  const [isProductPage, setIsProductPage] = useState(true);
+  const [isContactPage, setIsContactPage] = useState(false);
   // const [isProductDetailPage, setIsProductDetailPage] = useState(false);
 
   // initial values
@@ -41,11 +42,11 @@ const CreateGoods = () => {
     productPicLink: null,
     // contact
     // TODO un comment later
-    // contactName: '',
-    // contactAddress: '',
-    // contactEmail: '',
-    // contactMOC: '',
-    // contactPhoneNo: '',
+    contactName: '',
+    contactAddress: '',
+    contactEmail: '',
+    contactMOC: '',
+    contactPhoneNo: '',
     // chicken
     // TODO un comment later
     // chickenHormone: '',
@@ -64,7 +65,7 @@ const CreateGoods = () => {
 
   // Phone regex
   // TODO un comment later
-  // const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   // validation schema
   const validationSchema = Yup.object({
@@ -93,18 +94,18 @@ const CreateGoods = () => {
       .moreThan(0, 'delivery period must be greater than 0'),
     // contact details
     // TODO un comment later
-    // contactName: Yup.string().required('This field is required'),
-    // contactAddress: Yup.string().required('This field is required'),
-    // contactEmail: Yup.string()
-    //   .email('Invalid email')
-    //   .required('This field is required'),
-    // contactMOC: Yup.string().required('This field is required'),
-    // contactPhoneNo: Yup.string()
-    //   .when('contactMOC', {
-    //     is: 'telephonemoc',
-    //     then: Yup.string().required('Required'),
-    //   })
-    //   .matches(phoneRegExp, 'Phone number is not valid'),
+    contactName: Yup.string().required('This field is required'),
+    contactAddress: Yup.string().required('This field is required'),
+    contactEmail: Yup.string()
+      .email('Invalid email')
+      .required('This field is required'),
+    contactMOC: Yup.string().required('This field is required'),
+    contactPhoneNo: Yup.string()
+      .when('contactMOC', {
+        is: 'telephonemoc',
+        then: Yup.string().required('Required'),
+      })
+      .matches(phoneRegExp, 'Phone number is not valid'),
     // chicken
     // TODO un comment later
     // chickenHormone: Yup.string().when('productCategory', {
@@ -198,16 +199,16 @@ const CreateGoods = () => {
               <h1 className="flex-1 font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
                 Create New Product
               </h1>
-              <ProductDetails setFieldValueFormik={formik.setFieldValue} />
-              <div className="mt-7 w-full flex justify-end">
+              {/* <ProductDetails setFieldValueFormik={formik.setFieldValue} /> */}
+              {/* <div className="mt-7 w-full flex justify-end">
                 <Button
                   btnName="Create Product"
                   classStyles="rounded-xl"
                   btnType="submit"
                   disabled={!formik.isValid}
                 />
-              </div>
-              {/* {isProductPage && (
+              </div> */}
+              {isProductPage && (
                 <>
                   <ProductDetails setFieldValueFormik={formik.setFieldValue} />
                   <div className="mt-7 w-full flex justify-end">
@@ -222,8 +223,8 @@ const CreateGoods = () => {
                     />
                   </div>
                 </>
-              )} */}
-              {/* {isContactPage && (
+              )}
+              {isContactPage && (
                 <>
                   <ContactDetails mocAns={formik.values.contactMOC} />
                   <div className="mt-7 w-full flex justify-end space-x-3">
@@ -236,7 +237,16 @@ const CreateGoods = () => {
                         setIsProductPage(true);
                       }}
                     />
-                    <Button
+                    {/* temporary btn */}
+                    <div className="mt-7 w-full flex justify-end">
+                      <Button
+                        btnName="Create Product"
+                        classStyles="rounded-xl"
+                        btnType="submit"
+                        disabled={!formik.isValid}
+                      />
+                    </div>
+                    {/* <Button
                       btnName="Next"
                       classStyles="rounded-xl"
                       btnType="button"
@@ -244,9 +254,10 @@ const CreateGoods = () => {
                       handleClick={() => {
                         setIsContactPage(false);
                         setIsProductPage(false);
+
                         setIsProductDetailPage(true);
                       }}
-                    />
+                    /> */}
                   </div>
                   {formik.values.productCategory === '' && (
                     <div className="text-red-500 font-semibold py-2 flex w-full justify-end">
@@ -254,7 +265,7 @@ const CreateGoods = () => {
                     </div>
                   )}
                 </>
-              )} */}
+              )}
               {/* {isProductDetailPage && (
                 <>
                   {formik.values.productCategory === 'chicken' && (

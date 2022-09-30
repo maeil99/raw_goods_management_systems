@@ -13,6 +13,10 @@ import images from '../../../assets';
 import Button from '../../Button';
 // eslint-disable-next-line import/no-unresolved
 import Modal from '../../Modal';
+// eslint-disable-next-line import/no-unresolved
+import GoodsTab, { IGeneralInfo } from './GoodsTab';
+// eslint-disable-next-line import/no-unresolved
+import { IContactDetailsProps } from '../../../types/contact.interface';
 
 interface IGoodsDetailsQueryProps {
   category: string;
@@ -28,6 +32,11 @@ interface IGoodsDetailsQueryProps {
   tokenId: string;
   tokenURI: string;
   weight: string;
+  contactName: string;
+  contactAddress: string;
+  contactEmail: string;
+  contactMOC: string;
+  contactPhoneNo?: string;
 }
 
 type PaymentBodyCmpProps = {
@@ -93,7 +102,47 @@ const GoodsDetails = () => {
     tokenId: '',
     tokenURI: '',
     weight: '',
+    contactName: '',
+    contactAddress: '',
+    contactEmail: '',
+    contactMOC: '',
+    contactPhoneNo: undefined,
   });
+  const {
+    description,
+    imageURI,
+    name,
+    owner,
+    price,
+    seller,
+    tokenId,
+    tokenURI,
+    weight,
+    category,
+    createdAt,
+    deliveryMethod,
+    deliveryPeriod,
+    contactName,
+    contactAddress,
+    contactEmail,
+    contactMOC,
+    contactPhoneNo,
+  } = goods;
+  const generalInfo: IGeneralInfo = {
+    description,
+    category,
+    weight,
+    deliveryMethod,
+    deliveryPeriod,
+    createdAt,
+  };
+  const contactInfo: IContactDetailsProps = {
+    contactName,
+    contactAddress,
+    contactEmail,
+    contactMOC,
+    contactPhoneNo,
+  };
   const [buyGoodsQuery, setBuyGoodsQuery] = useState<IBuyGoods>();
   const router = useRouter();
 
@@ -112,7 +161,6 @@ const GoodsDetails = () => {
   console.log('goods: ', { goods });
 
   const checkout = async () => {
-    setBuyGoodsQuery({ goodsPrice: goods.price, tokenId: goods.tokenId });
     if (!buyGoods || !buyGoodsQuery) return;
     await buyGoods(buyGoodsQuery);
 
@@ -125,7 +173,7 @@ const GoodsDetails = () => {
       <div className="relative flex-1 flexCenter sm:px-4 p-12 border-r md:border-r-0 md:border-b dark:border-nft-black-1 border-nft-gray-1">
         <div className="relative w-557 h-557 minmd:w-2/3 minmd:h-2/3 sm:w-full sm:h-300">
           <Image
-            src={goods.imageURI}
+            src={imageURI}
             objectFit="cover"
             className="rounded-xl shadow-lg"
             layout="fill"
@@ -135,7 +183,7 @@ const GoodsDetails = () => {
       <div className="flex-1 justify-start sm:px-4 p-12 sm:pb-4">
         <div className="flex flex-row sm:flex-col">
           <h2 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-2xl minlg:text-3xl">
-            {goods.name}
+            {name}
           </h2>
         </div>
         <div className="mt-10">
@@ -151,42 +199,39 @@ const GoodsDetails = () => {
               />
             </div>
             <p className="font-poppins dark:text-white text-nft-black-1 text-xs minlg:text-base font-semibold">
-              {shortenAddress(goods.seller)}
+              {shortenAddress(seller)}
             </p>
           </div>
         </div>
         <div className="mt-10 flex flex-col">
-          <div className="w-full border-b dark:border-nft-black-1 border-nft-gray-1 flex flex-row">
-            <p className="font-poppins dark:text-white text-nft-black-1 text-base minlg:text-base font-medium mb-2">
-              Details
-            </p>
-          </div>
-          <div className="mt-3 ">
-            <p className="font-poppins dark:text-white text-nft-black-1 text-base  font-normal">
-              {goods.description}
-            </p>
-          </div>
+          <GoodsTab generalInfo={generalInfo} contactInfo={contactInfo} />
         </div>
         <div className="flex flex-row sm:flex-col mt-10">
-          {currentAccount === goods.seller.toLowerCase() ? (
+          {currentAccount === seller.toLowerCase() ? (
             <p className="font-poppins dark:text-white text-nft-black-1 text-base  font-normal border-gray p-2">
-              You cannot buy your own Goods
+              You cannot buy your own goods
             </p>
-          ) : currentAccount === goods.owner.toLowerCase() ? (
+          ) : currentAccount === owner.toLowerCase() ? (
             <Button
               btnType="button"
               btnName="List on Marketplaces"
               classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
               handleClick={() => router.push(
-                `/resell-nft?tokenId=${goods.tokenId}&tokenURI=${goods.tokenURI}`,
+                `/resell-nft?tokenId=${tokenId}&tokenURI=${tokenURI}`,
               )}
             />
           ) : (
             <Button
               btnType="button"
-              btnName={`Buy for ${goods.price} ${goodsCurrency}`}
+              btnName={`Buy for ${price} ${goodsCurrency}`}
               classStyles="mr-5 sm:mr-0 rounded-xl"
-              handleClick={() => setPaymentModal(true)}
+              handleClick={() => {
+                setBuyGoodsQuery({
+                  goodsPrice: goods.price,
+                  tokenId: goods.tokenId,
+                });
+                setPaymentModal(true);
+              }}
             />
           )}
         </div>

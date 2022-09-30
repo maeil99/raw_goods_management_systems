@@ -1,6 +1,7 @@
 export interface IContactDetailsProps {
-  name: string;
-  homeAddress: string;
-  email: string;
-  phone?: string;
+  contactName: string;
+  contactAddress: string;
+  contactEmail: string;
+  contactMOC: string;
+  contactPhoneNo?: string;
 }

@@ -20,11 +20,11 @@ export interface IFormFieldProps {
 
   // contact details
   // TODO un comment later
-  // contactName: string;
-  // contactAddress: string;
-  // contactEmail: string;
-  // contactMOC: string;
-  // contactPhoneNo?: string;
+  contactName: string;
+  contactAddress: string;
+  contactEmail: string;
+  contactMOC: string;
+  contactPhoneNo?: string;
 
   // chicken details
   // TODO un comment later
