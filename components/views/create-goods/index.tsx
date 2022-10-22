@@ -80,7 +80,12 @@ const CreateGoods = () => {
     productPrice: Yup.number()
       .required('Price is required')
       .typeError('you must specify a number')
-      .moreThan(0, 'price must be greater than 0'),
+      .moreThan(0, 'price must be greater than 0')
+      .test(
+        'maxDigits',
+        'price field only accepted up to 6 decimal places',
+        (productprice) => String(productprice).length <= 8,
+      ),
     productWeight: Yup.number()
       .required('Weight is required')
       .typeError('you must specify a number')
@@ -183,7 +188,6 @@ const CreateGoods = () => {
     // TODO un comment later
     // console.log('Submitted Data: ', isSubmit);
     // setIsProductDetailPage(false);
-    // router.push('/');
   };
 
   return (
@@ -227,7 +231,7 @@ const CreateGoods = () => {
               {isContactPage && (
                 <>
                   <ContactDetails mocAns={formik.values.contactMOC} />
-                  <div className="mt-7 w-full flex justify-end space-x-3">
+                  <div className="mt-7 w-full flex justify-between space-x-3">
                     <Button
                       btnName="Back"
                       classStyles="rounded-xl"
@@ -237,15 +241,12 @@ const CreateGoods = () => {
                         setIsProductPage(true);
                       }}
                     />
-                    {/* temporary btn */}
-                    <div className="mt-7 w-full flex justify-end">
-                      <Button
-                        btnName="Create Product"
-                        classStyles="rounded-xl"
-                        btnType="submit"
-                        disabled={!formik.isValid}
-                      />
-                    </div>
+                    <Button
+                      btnName="Create Product"
+                      classStyles="rounded-xl"
+                      btnType="submit"
+                      disabled={!formik.isValid}
+                    />
                     {/* <Button
                       btnName="Next"
                       classStyles="rounded-xl"

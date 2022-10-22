@@ -8,6 +8,27 @@ export interface IFetchGoodsProps {
   contact: IContactDetailsProps;
 }
 
+export interface IGoodsDetailsQueryProps {
+  category: string;
+  createdAt: string;
+  deliveryMethod: string;
+  deliveryPeriod: string;
+  description: string;
+  imageURI: string;
+  name: string;
+  owner: string;
+  price: string;
+  seller: string;
+  tokenId: string;
+  tokenURI: string;
+  weight: string;
+  contactName: string;
+  contactAddress: string;
+  contactEmail: string;
+  contactMOC: string;
+  contactPhoneNo?: string;
+}
+
 export interface IFormattedGoods {
   price: string;
   tokenId: number;

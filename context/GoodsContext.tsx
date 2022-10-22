@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Web3Modal from 'web3modal';
 import { BigNumber, ethers } from 'ethers';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { create as ipfsHTTPClient } from 'ipfs-http-client';
 import { NextRouter } from 'next/router';
 
@@ -27,9 +27,17 @@ export interface IBuyGoods {
   tokenId: string;
 }
 
+export interface ICryptoPrice {
+  ETH: {
+    USD: number;
+    MYR: number;
+  };
+}
+
 interface ICreateContextProps {
   goodsCurrency: string;
   currentAccount: string;
+  currentETHMarketPrice?:() => Promise<ICryptoPrice | undefined>;
   connectWallet?: () => Promise<void>;
   uploadToIPFS?: (file: File) => Promise<string | undefined>;
   createSale?: (
@@ -45,6 +53,9 @@ interface ICreateContextProps {
   ) => Promise<void>;
   fetchGoods?: () => Promise<IFormattedGoods[]>;
   buyGoods?: (goods: IBuyGoods) => Promise<void>;
+  fetchMyGoodsOrListedGoods?: (
+    type: 'fetchItemsListed' | 'fetchMyNFTs'
+  ) => Promise<IFormattedGoods[]>;
   // fetchGoods?: () => Promise<IFormattedGoods[]>;
 }
 
@@ -74,6 +85,9 @@ const fetchContract = (
     | ethers.providers.JsonRpcProvider,
 ): ethers.Contract => new ethers.Contract(MarketAddress, MarketAddressABI, signerOrProvider);
 
+// fetch current price for ETH
+const cryptoAPI = 'd8cb697fc3ced7dc892fc46fdf5bb77841c66b1500235132cdc513bfcc8ce968';
+
 export const GoodsContext = React.createContext<ICreateContextProps>({
   goodsCurrency: '',
   currentAccount: '',
@@ -83,11 +97,26 @@ export const GoodsContext = React.createContext<ICreateContextProps>({
   createSale: undefined,
   fetchGoods: undefined,
   buyGoods: undefined,
+  fetchMyGoodsOrListedGoods: undefined,
+  currentETHMarketPrice: undefined,
 });
 
 export const GoodsProvider = ({ children }: IContextProps) => {
   const [currentAccount, setCurrentAccount] = useState('');
-  const goodsCurrency = 'DAI';
+  const goodsCurrency = 'ETH';
+
+  const currentETHMarketPrice = async () => {
+    try {
+      const eth = await axios.get<ICryptoPrice>(
+        `https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=MYR,USD&api_key=${cryptoAPI}`,
+      );
+      const { data } = eth;
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // check if metamask is connected
   const checkIfWalletIsConnected = async () => {
@@ -200,12 +229,13 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       console.log('url from create goods ', url);
       const price = productPrice.toString();
       await createSale(url, price);
-      // router.push('/');
+      router.push('/');
     } catch (error) {
       console.log(error);
       console.log('Error uploading file to IPFS');
     }
   };
+
   // fetch all goods available in marketplace
   const fetchGoods = async (): Promise<IFormattedGoods[]> => {
     const provider = new ethers.providers.JsonRpcProvider();
@@ -216,11 +246,11 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       (rawData as IRawGoodsData[]).map(
         async ({ tokenId, seller, owner, price: unformattedPrice }) => {
           const tokenURI = await contract.tokenURI(tokenId);
-          const metadata = await axios.get<IFetchGoodsProps>(tokenURI);
+          // const metadata = await axios.get<IFetchGoodsProps>(tokenURI);
           const { data } = await axios.get<IFetchGoodsProps>(tokenURI);
-          console.log('metadata: ', metadata);
+          // console.log('metadata: ', metadata);
           const { product, contact } = data;
-          console.log('contact: ', contact);
+          // console.log('contact: ', contact);
           // const { category, createdAt, deliveryMethod, deliveryPeriod, description, imageURI, name, weight } = product;
           // console.log('metadata: ', data);
           // console.table(product);
@@ -259,10 +289,54 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     await transaction.wait();
   };
 
+  const fetchMyGoodsOrListedGoods = async (
+    type: 'fetchItemsListed' | 'fetchMyNFTs',
+  ): Promise<IFormattedGoods[]> => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = fetchContract(signer);
+
+    const data = type === 'fetchItemsListed'
+      ? await contract.fetchItemsListed()
+      : await contract.fetchMyGoods();
+
+    const items = await Promise.all(
+      (data as IRawGoodsData[]).map(
+        async ({ tokenId, seller, owner, price: unformattedPrice }) => {
+          const tokenURI = await contract.tokenURI(tokenId);
+          const { data: fetchData } = await axios.get<IFetchGoodsProps>(
+            tokenURI,
+          );
+          const { product, contact } = fetchData;
+          // eslint-disable-next-line no-underscore-dangle
+          const price = ethers.utils.formatUnits(
+            unformattedPrice.toString(),
+            'ether',
+          );
+
+          return {
+            price,
+            tokenId: tokenId.toNumber(),
+            seller,
+            owner,
+            tokenURI,
+            product,
+            contact,
+          };
+        },
+      ),
+    );
+
+    return items;
+  };
+
   return (
     <GoodsContext.Provider
       value={{
         goodsCurrency,
+        currentETHMarketPrice,
         connectWallet,
         currentAccount,
         uploadToIPFS,
@@ -270,6 +344,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         createSale,
         fetchGoods,
         buyGoods,
+        fetchMyGoodsOrListedGoods,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
-import React, { useContext } from 'react';
-import { GoodsContext } from '../../../context/GoodsContext';
+import React, { useContext, useEffect, useState } from 'react';
+import { GoodsContext, ICryptoPrice } from '../../../context/GoodsContext';
 import { FieldType, IOptionsProps } from '../../../types/form.interface';
 import FormikControl from '../../layout/form/FormikControl';
 
@@ -19,7 +19,14 @@ const prodCategoryOpt: IOptionsProps[] = [
 ];
 
 const ProductDetails = ({ setFieldValueFormik }: IProductDetailsProps) => {
-  const { goodsCurrency } = useContext(GoodsContext);
+  const { goodsCurrency, currentETHMarketPrice } = useContext(GoodsContext);
+
+  // to get latest price for 1 ETH
+  const [ethPrice, setEthPrice] = useState<ICryptoPrice>();
+  useEffect(() => {
+    if (!currentETHMarketPrice) return;
+    currentETHMarketPrice().then((res) => setEthPrice(res));
+  }, []);
 
   return (
     <div>
@@ -50,6 +57,10 @@ const ProductDetails = ({ setFieldValueFormik }: IProductDetailsProps) => {
         unit={goodsCurrency}
         type={FieldType.NUMBER}
       />
+      <div className="flex flex-col text-nft-dark dark:text-white sm:font-normal font-semibold text-sm">
+        <p>{`1 ETH = RM ${ethPrice?.ETH.MYR}`}</p>
+        {ethPrice && <p>{`1 MYR = ${1 / ethPrice.ETH.MYR} ETH`}</p>}
+      </div>
       <FormikControl
         control="textField"
         label="Weight"

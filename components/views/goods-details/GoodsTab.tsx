@@ -139,13 +139,15 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
               {contactInfo.contactEmail}
             </p>
             <p className="font-poppins dark:text-white text-nft-black-1 font-normal">
-              {contactInfo.contactMOC}
+              {contactInfo.contactMOC === 'telephonemoc'
+                ? 'Telephone'
+                : 'Email'}
             </p>
-            {contactInfo.contactMOC === 'telephonemoc' && (
-              <p className="font-poppins dark:text-white text-nft-black-1 font-normal">
-                telephone
-              </p>
-            )}
+            <p className="font-poppins dark:text-white text-nft-black-1 font-normal">
+              {contactInfo.contactMOC === 'telephonemoc'
+                ? contactInfo.contactPhoneNo
+                : ''}
+            </p>
           </div>
         </div>
       )}

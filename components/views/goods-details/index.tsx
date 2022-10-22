@@ -17,27 +17,8 @@ import Modal from '../../Modal';
 import GoodsTab, { IGeneralInfo } from './GoodsTab';
 // eslint-disable-next-line import/no-unresolved
 import { IContactDetailsProps } from '../../../types/contact.interface';
-
-interface IGoodsDetailsQueryProps {
-  category: string;
-  createdAt: string;
-  deliveryMethod: string;
-  deliveryPeriod: string;
-  description: string;
-  imageURI: string;
-  name: string;
-  owner: string;
-  price: string;
-  seller: string;
-  tokenId: string;
-  tokenURI: string;
-  weight: string;
-  contactName: string;
-  contactAddress: string;
-  contactEmail: string;
-  contactMOC: string;
-  contactPhoneNo?: string;
-}
+// eslint-disable-next-line import/no-unresolved
+import { IGoodsDetailsQueryProps } from '../../../types/goods.interface';
 
 type PaymentBodyCmpProps = {
   goods: IGoodsDetailsQueryProps;
@@ -217,7 +198,7 @@ const GoodsDetails = () => {
               btnName="List on Marketplaces"
               classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
               handleClick={() => router.push(
-                `/resell-nft?tokenId=${tokenId}&tokenURI=${tokenURI}`,
+                `/resell-goods?tokenId=${tokenId}&tokenURI=${tokenURI}`,
               )}
             />
           ) : (
@@ -289,7 +270,7 @@ const GoodsDetails = () => {
                 btnName="Check it out"
                 btnType="button"
                 classStyles="sm:mr-0 sm:mb-5 rounded-xl"
-                handleClick={() => router.push('/my-nfts')}
+                handleClick={() => router.push('/my-goods')}
               />
             </div>
           )}
