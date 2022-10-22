@@ -10,5 +10,6 @@ import Modal from './Modal';
 import BareButton from './BareButton';
 import Button from './Button';
 import Input from './Input';
+import ToolTip from './ToolTip';
 
-export { Navbar, Footer, Banner, Loader, SearchBar, GoodsCard, CreatorCard, Modal, BareButton, Button, Input };
+export { Navbar, Footer, Banner, Loader, SearchBar, GoodsCard, CreatorCard, Modal, BareButton, Button, Input, ToolTip };
