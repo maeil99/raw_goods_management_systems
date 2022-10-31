@@ -1,31 +1,36 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/no-unresolved */
 import { Form, Formik } from 'formik';
-// import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext, useState } from 'react';
 import * as Yup from 'yup';
-import { IFormFieldProps, ISubmitForm } from '../../../types/form.interface';
+import { GoodsContext } from '../../../context/GoodsContext';
+import { IFormFieldProps } from '../../../types/form.interface';
 import Button from '../../Button';
+import ToolTip from '../../ToolTip';
 import ContactDetails from './ContactDetails';
 import {
   ChickenFieldForm,
-  SeafoodFieldForm,
+  FruitForm,
   MeatFieldForm,
+  SeafoodFieldForm,
+  VegetableForm,
 } from './GoodsDetails';
 import ProductDetails from './ProductDetails';
 
 const CreateGoods = () => {
   const createdAt = new Date().toJSON();
-  const [isSubmit, setIsSubmit] = useState<ISubmitForm>();
-  // const router = useRouter();
+  const { createGoods } = useContext(GoodsContext);
+  const router = useRouter();
 
   // handle pages
   const [isProductPage, setIsProductPage] = useState(true);
   const [isContactPage, setIsContactPage] = useState(false);
-  const [isProductDetailPage, setIsProductDetailPage] = useState(false);
+  const [isProductDetailsPage, setIsProductDetailsPage] = useState(false);
 
   // initial values
   const initialValue: IFormFieldProps = {
+    // product
     productName: '',
     productCategory: '',
     productDesc: '',
@@ -34,70 +39,108 @@ const CreateGoods = () => {
     productDeliveryMethod: '',
     productDeliveryPeriod: 0,
     productPicLink: null,
+
     // contact
     contactName: '',
     contactAddress: '',
     contactEmail: '',
     contactMOC: '',
     contactPhoneNo: '',
+
     // chicken
     chickenHormone: '',
     chickenOption: '',
-    meatAnimalTypes: '',
+
     // meat
-    meatImport: undefined,
+    meatAnimalTypes: '',
+    meatImport: '',
     meatCountryImport: '',
     meatHormone: '',
+
     // seafood
     seafoodTypes: '',
+    fishList: '',
+    fishClean: '',
+    fishFresh: '',
+    fishPreservation: '',
+    crustaceaList: '',
+    molluscaList: '',
+
+    // vegetables
+    vegList: '',
+    vegFertilizer: '',
+    vegTypeOfFertilizer: '',
+    vegImport: '',
+    vegCountryImport: '',
+    vegPesticide: '',
+
+    // fruit
+    fruitCountryImport: '',
+    fruitFertilizer: '',
+    fruitImport: '',
+    fruitList: '',
+    fruitPesticide: '',
+    fruitPlant: '',
+    fruitWax: '',
+
     createdAt,
   };
 
   // Phone regex
+  // TODO un comment later
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   // validation schema
   const validationSchema = Yup.object({
     productPicLink: Yup.mixed().required('A picture is required'),
     productName: Yup.string()
-      .required('This field is required')
+      .required('Please specify a product name')
       .min(2, 'Minimum character is 2'),
     productCategory: Yup.string().required('Please select a category'),
     productDesc: Yup.string()
-      .required('Description is required')
+      .required('Please give some description for the product')
       .min(2, 'Minimum character is 2'),
     productPrice: Yup.number()
-      .required('Price is required')
+      .required('Please specify a product price')
       .typeError('you must specify a number')
-      .moreThan(0, 'price must be greater than 0'),
+      .moreThan(0, 'price must be greater than 0')
+      .test(
+        'maxDigits',
+        'price field only accepted up to 6 decimal places',
+        (productPrice) => String(productPrice).length <= 8,
+      ),
     productWeight: Yup.number()
-      .required('Weight is required')
+      .required('Please specify product weight')
       .typeError('you must specify a number')
       .moreThan(0, 'weight must be greater than 0'),
     productDeliveryMethod: Yup.string()
-      .required('Delivery method is required')
+      .required('Please specify delivery method')
       .min(2, 'Minimum character is 2'),
     productDeliveryPeriod: Yup.number()
-      .required('Delivery period is required')
+      .required('Please specify delivery period')
       .typeError('you must specify a number')
       .moreThan(0, 'delivery period must be greater than 0'),
     // contact details
-    contactName: Yup.string().required('This field is required'),
-    contactAddress: Yup.string().required('This field is required'),
+    contactName: Yup.string().required('Please insert product owner name'),
+    contactAddress: Yup.string().required(
+      'Please insert product owner address',
+    ),
     contactEmail: Yup.string()
       .email('Invalid email')
-      .required('This field is required'),
-    contactMOC: Yup.string().required('This field is required'),
+      .required('Please enter your email'),
+    contactMOC: Yup.string().required(
+      'Please choose type of contact you prefer',
+    ),
     contactPhoneNo: Yup.string()
       .when('contactMOC', {
         is: 'telephonemoc',
-        then: Yup.string().required('Required'),
+        then: Yup.string().required('Please insert product owner number'),
       })
       .matches(phoneRegExp, 'Phone number is not valid'),
     // chicken
     chickenHormone: Yup.string().when('productCategory', {
       is: 'chicken',
-      then: Yup.string().required('This field is required'),
+      then: Yup.string().required('Please choose one option'),
     }),
     chickenOption: Yup.string().when('productCategory', {
       is: 'chicken',
@@ -106,65 +149,118 @@ const CreateGoods = () => {
     // meat
     meatAnimalTypes: Yup.string().when('productCategory', {
       is: 'meat',
-      then: Yup.string().required('This field is required'),
+      then: Yup.string().required('Please choose one option'),
     }),
     meatImport: Yup.string().when('productCategory', {
       is: 'meat',
-      then: Yup.string().required('This field is required'),
+      then: Yup.string().required('Please choose one option'),
     }),
     meatCountryImport: Yup.string().when('meatImport', {
       is: 'true',
-      then: Yup.string().required('This field is required'),
+      then: Yup.string().required(
+        'PLease specify country name for imported product',
+      ),
     }),
     meatHormone: Yup.string().when('productCategory', {
       is: 'meat',
-      then: Yup.string().required('This field is required'),
+      then: Yup.string().required('Please choose one option'),
     }),
     // seafood
     seafoodTypes: Yup.string().when('productCategory', {
       is: 'seafood',
       then: Yup.string().required('Please choose types of seafood'),
     }),
+    fishList: Yup.string().when('seafoodTypes', {
+      is: 'fish',
+      then: Yup.string().required('Please choose types of fish'),
+    }),
+    fishFresh: Yup.string().when('seafoodTypes', {
+      is: 'fish',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    fishClean: Yup.string().when('seafoodTypes', {
+      is: 'fish',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    fishPreservation: Yup.string().when('seafoodTypes', {
+      is: 'fish',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    molluscaList: Yup.string().when('seafoodTypes', {
+      is: 'mollusca',
+      then: Yup.string().required('Please choose types of mollusca'),
+    }),
+    crustaceaList: Yup.string().when('seafoodTypes', {
+      is: 'crustacea',
+      then: Yup.string().required('Please choose types of crustacea'),
+    }),
+    // vegetables
+    vegList: Yup.string().when('productCategory', {
+      is: 'vegetable',
+      then: Yup.string().required('Please choose types of vegetable'),
+    }),
+    vegFertilizer: Yup.string().when('productCategory', {
+      is: 'vegetable',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    vegTypeOfFertilizer: Yup.string().when('vegFertilizer', {
+      is: 'true',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    vegImport: Yup.string().when('productCategory', {
+      is: 'vegetable',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    vegCountryImport: Yup.string().when('vegImport', {
+      is: 'true',
+      then: Yup.string().required(
+        'PLease specify country name for imported product',
+      ),
+    }),
+    vegPesticide: Yup.string().when('productCategory', {
+      is: 'vegetable',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    fruitList: Yup.string().when('productCategory', {
+      is: 'fruit',
+      then: Yup.string().required('Please choose one type of fruit'),
+    }),
+    fruitFertilizer: Yup.string().when('productCategory', {
+      is: 'fruit',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    fruitImport: Yup.string().when('productCategory', {
+      is: 'fruit',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    fruitCountryImport: Yup.string().when('fruitImport', {
+      is: 'true',
+      then: Yup.string().required(
+        'PLease specify country name for imported product',
+      ),
+    }),
+    fruitPlant: Yup.string().when('productCategory', {
+      is: 'fruit',
+      then: Yup.string().required('Please insert a place'),
+    }),
+    fruitPesticide: Yup.string().when('productCategory', {
+      is: 'fruit',
+      then: Yup.string().required('Please choose one option'),
+    }),
+    fruitWax: Yup.string().when('productCategory', {
+      is: 'fruit',
+      then: Yup.string().required('Please choose one option'),
+    }),
   });
-
-  const submitForm = (values: IFormFieldProps) => {
-    if (values.productCategory === 'chicken') {
-      setIsSubmit({
-        product: {
-          name: values.productName,
-          category: values.productCategory,
-          price: values.productPrice,
-          weight: values.productWeight,
-          description: values.productDesc,
-          deliveryMethod: values.productDeliveryMethod,
-          deliveryPeriod: values.productDeliveryPeriod,
-          imageURI: values.productPicLink,
-          createdAt: values.createdAt,
-        },
-        productDetails: {
-          chickenParts: values.chickenOption ? values.chickenOption : '',
-          isChickenHormone: values.chickenHormone === 'true',
-        },
-        contactDetails: {
-          name: values.contactName,
-          email: values.contactEmail,
-          homeAddress: values.contactAddress,
-          phone: values.contactPhoneNo,
-        },
-      });
-    }
-  };
 
   // submit
   const onSubmit = (values: IFormFieldProps) => {
-    // sambung sini
     const { productPicLink } = values;
     console.log(`link gambar: ${productPicLink}`);
     console.log({ values });
-    submitForm(values);
-    console.log('Submitted Data: ', isSubmit);
-    // setIsProductDetailPage(false);
-    // router.push('/');
+
+    if (!createGoods || productPicLink === null) return;
+    createGoods(values, productPicLink, router);
   };
 
   return (
@@ -176,7 +272,7 @@ const CreateGoods = () => {
       {(formik) => (
         <Form>
           <div className="flex justify-center sm:px-4 p-12">
-            <div className="W-3/5 md:w-full">
+            <div className="w-3/5 md:w-full">
               <h1 className="flex-1 font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
                 Create New Product
               </h1>
@@ -199,7 +295,7 @@ const CreateGoods = () => {
               {isContactPage && (
                 <>
                   <ContactDetails mocAns={formik.values.contactMOC} />
-                  <div className="mt-7 w-full flex justify-end space-x-3">
+                  <div className="mt-7 w-full flex justify-between space-x-3">
                     <Button
                       btnName="Back"
                       classStyles="rounded-xl"
@@ -217,7 +313,7 @@ const CreateGoods = () => {
                       handleClick={() => {
                         setIsContactPage(false);
                         setIsProductPage(false);
-                        setIsProductDetailPage(true);
+                        setIsProductDetailsPage(true);
                       }}
                     />
                   </div>
@@ -228,7 +324,7 @@ const CreateGoods = () => {
                   )}
                 </>
               )}
-              {isProductDetailPage && (
+              {isProductDetailsPage && (
                 <>
                   {formik.values.productCategory === 'chicken' && (
                     <ChickenFieldForm />
@@ -247,35 +343,62 @@ const CreateGoods = () => {
                       }
                     />
                   )}
-
+                  {formik.values.productCategory === 'vegetable' && (
+                    <VegetableForm
+                      vegIsFertilizerUsedAns={
+                        formik.values.vegFertilizer
+                          ? formik.values.vegFertilizer
+                          : ''
+                      }
+                      isVegImportAns={
+                        formik.values.vegImport ? formik.values.vegImport : ''
+                      }
+                    />
+                  )}
+                  {formik.values.productCategory === 'fruit' && (
+                    <FruitForm isFruitImportAns={formik.values.fruitImport || ''} />
+                  )}
                   <div className="mt-7 w-full flex justify-end space-x-3">
                     <Button
                       btnName="Back"
                       classStyles="rounded-xl"
                       btnType="button"
                       handleClick={() => {
-                        setIsProductDetailPage(false);
+                        setIsProductDetailsPage(false);
                         setIsContactPage(true);
                       }}
                     />
-                    <Button
-                      btnName="Create Product"
-                      classStyles="rounded-xl"
-                      btnType="submit"
-                      disabled={!formik.isValid}
-                    />
-                  </div>
-                  {!formik.isValid && (
-                    <div className="text-red-500 font-semibold py-2 flex w-full justify-end">
-                      <ul>
-                        {Object.values(formik.errors).map(
-                          (invalidForm, index) => (
-                            <li key={index}>{invalidForm}</li>
-                          ),
+                    {!formik.isValid ? (
+                      <ToolTip
+                        tooltip={(
+                          <div className="text-red-500 font-semibold py-2 flex w-full justify-end">
+                            <ul>
+                              {Object.values(formik.errors).map(
+                                (invalidForm, index) => (
+                                  <li key={index}>{invalidForm}</li>
+                                ),
+                              )}
+                            </ul>
+                          </div>
                         )}
-                      </ul>
-                    </div>
-                  )}
+                        className="bg-white text-red-500"
+                      >
+                        <Button
+                          btnName="Create Product"
+                          classStyles="rounded-xl"
+                          btnType="submit"
+                          disabled={!formik.isValid}
+                        />
+                      </ToolTip>
+                    ) : (
+                      <Button
+                        btnName="Create Product"
+                        classStyles="rounded-xl"
+                        btnType="submit"
+                        disabled={!formik.isValid}
+                      />
+                    )}
+                  </div>
                 </>
               )}
             </div>

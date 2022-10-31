@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable import/no-unresolved */
 import { render, screen } from '@testing-library/react';
+import React from 'react';
 import Home from '../../pages';
 
 describe('Home', () => {

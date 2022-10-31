@@ -1,7 +1,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/no-unresolved */
 // TODO need to revamp
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { ErrorMessage } from 'formik';
@@ -9,8 +9,9 @@ import { ErrorMessage } from 'formik';
 // assets
 import images from '../../../assets';
 import { IFormikProps } from '../../../types/form.interface';
-import StorageClient from '../../../shared/utils/StorageClient';
+// import StorageClient from '../../../shared/utils/StorageClient';
 import TextError from './TextError';
+import { GoodsContext } from '../../../context/GoodsContext';
 
 interface IUploadFileProps extends IFormikProps {
   maxSize?: number;
@@ -26,6 +27,7 @@ const UploadFile = ({
   const [file, setFile] = useState<File | null>(null);
   const [isUpload, setIsUpload] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { uploadToIPFS } = useContext(GoodsContext);
 
   // drop function
   const onDropFunction = useCallback(async (acceptedFile: any) => {
@@ -68,8 +70,10 @@ const UploadFile = ({
   );
 
   const uploadImage = async () => {
-    const imageURI = await new StorageClient().storeFiles(file);
-    setFieldValue('productPicLink', imageURI);
+    if (file === null || uploadToIPFS === undefined) return;
+    const url = await uploadToIPFS(file);
+    console.log({ url });
+    setFieldValue('productPicLink', url);
   };
 
   return (

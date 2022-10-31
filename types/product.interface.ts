@@ -6,6 +6,7 @@ export interface IProductProps {
   weight: number;
   deliveryMethod: string;
   deliveryPeriod: number;
-  imageURI: File | null;
+  imageURI: string;
+  // imageURI: File | null;
   createdAt: string;
 }

@@ -1,12 +1,4 @@
-/* eslint-disable import/no-unresolved */
 /* eslint-disable no-unused-vars */
-
-import { IChickenProps } from './chicken.interface';
-import { IContactDetailsProps } from './contact.interface';
-import { IMeatProps } from './meat.interface';
-import { IProductProps } from './product.interface';
-
-/* eslint-disable no-shadow */
 export interface IFormFieldProps {
   productName: string;
   productCategory: string;
@@ -15,7 +7,7 @@ export interface IFormFieldProps {
   productWeight: number;
   productDeliveryMethod: string;
   productDeliveryPeriod: number;
-  productPicLink: File | null;
+  productPicLink: string | null;
 
   // contact details
   contactName: string;
@@ -30,16 +22,40 @@ export interface IFormFieldProps {
 
   // meat details
   meatAnimalTypes?: string;
-  meatImport?: boolean;
+  meatImport?: string;
   meatCountryImport?: string;
   meatHormone?: string;
 
   // seafood details
   seafoodTypes?: string;
+  fishList?: string;
+  fishFresh?: string;
+  fishClean?: string;
+  fishPreservation?: string;
+  molluscaList?: string;
+  crustaceaList?: string;
+
+  // vegetables
+  vegList?:string;
+  vegFertilizer?:string;
+  vegTypeOfFertilizer?:string;
+  vegImport?:string,
+  vegCountryImport?:string,
+  vegPesticide?:string;
+
+  // fruit
+  fruitList?:string;
+  fruitFertilizer?:string;
+  fruitImport?:string;
+  fruitCountryImport?:string;
+  fruitPlant?:string;
+  fruitPesticide?:string;
+  fruitWax?:string;
 
   createdAt: string;
 }
 
+// eslint-disable-next-line no-shadow
 export enum FieldType {
   TEXT = 'text',
   PASSWORD = 'password',
@@ -71,10 +87,4 @@ export interface IFormikProps {
 export interface IOptionsProps {
   key: string;
   value: string | number | readonly string[];
-}
-
-export interface ISubmitForm {
-  product: IProductProps;
-  contactDetails: IContactDetailsProps;
-  productDetails: IChickenProps | IMeatProps;
 }
