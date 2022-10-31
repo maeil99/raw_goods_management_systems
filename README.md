@@ -15,7 +15,3 @@ npx hardhat run scripts/deploy.ts
 npm run dev
 npx hardhat node
 npx hardhat run .\scripts\deploy.ts --network localhost
-
-npm i -g npm-check-updates
-ncu -u
-npm install
