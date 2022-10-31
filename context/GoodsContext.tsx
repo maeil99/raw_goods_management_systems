@@ -37,7 +37,7 @@ export interface ICryptoPrice {
 interface ICreateContextProps {
   goodsCurrency: string;
   currentAccount: string;
-  currentETHMarketPrice?:() => Promise<ICryptoPrice | undefined>;
+  currentETHMarketPrice?: () => Promise<ICryptoPrice | undefined>;
   connectWallet?: () => Promise<void>;
   uploadToIPFS?: (file: File) => Promise<string | undefined>;
   createSale?: (
@@ -200,6 +200,32 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       contactEmail,
       contactMOC,
       contactPhoneNo,
+      chickenHormone,
+      chickenOption,
+      meatAnimalTypes,
+      meatCountryImport,
+      meatHormone,
+      meatImport,
+      seafoodTypes,
+      fishList,
+      fishClean,
+      fishFresh,
+      fishPreservation,
+      crustaceaList,
+      molluscaList,
+      vegCountryImport,
+      vegFertilizer,
+      vegImport,
+      vegList,
+      vegPesticide,
+      vegTypeOfFertilizer,
+      fruitCountryImport,
+      fruitFertilizer,
+      fruitImport,
+      fruitList,
+      fruitPesticide,
+      fruitPlant,
+      fruitWax,
     } = formInput;
     if (!formInput || !fileUrl) return;
     const data = JSON.stringify({
@@ -220,6 +246,44 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         contactEmail,
         contactMOC,
         contactPhoneNo: contactPhoneNo || undefined,
+      },
+      goodsDetails: {
+        chicken: {
+          isChickenHormone: chickenHormone,
+          chickenType: chickenOption,
+        },
+        meat: {
+          meatType: meatAnimalTypes,
+          isMeatImported: meatImport,
+          isMeatHormone: meatHormone,
+          meatImportedCountry: meatCountryImport,
+        },
+        seafood: {
+          seafoodTypes,
+          typeOfFish: fishList,
+          isFishClean: fishClean,
+          isFishFresh: fishFresh,
+          isFishHavePreservation: fishPreservation,
+          typeOfCrustacea: crustaceaList,
+          typeOfMollusca: molluscaList,
+        },
+        vegetable: {
+          vegType: vegList,
+          isVegUseFertilizer: vegFertilizer,
+          vegFertilizerType: vegTypeOfFertilizer,
+          isVegImported: vegImport,
+          vegImportedCountry: vegCountryImport,
+          isVegUsePesticide: vegPesticide,
+        },
+        fruit: {
+          fruitType: fruitList,
+          isFruitFertilize: fruitFertilizer,
+          isFruitImported: fruitImport,
+          fruitImportedCountry: fruitCountryImport,
+          whereFruitPlanted: fruitPlant,
+          isFruitUsePesticide: fruitPesticide,
+          isFruitUseWax: fruitWax,
+        },
       },
     });
     console.log('create goods data: ', data);
@@ -245,11 +309,11 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     const items = await Promise.all(
       (rawData as IRawGoodsData[]).map(
         async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-          const tokenURI = await contract.tokenURI(tokenId);
+          const tokenUri = await contract.tokenURI(tokenId);
           // const metadata = await axios.get<IFetchGoodsProps>(tokenURI);
-          const { data } = await axios.get<IFetchGoodsProps>(tokenURI);
+          const { data } = await axios.get<IFetchGoodsProps>(tokenUri);
           // console.log('metadata: ', metadata);
-          const { product, contact } = data;
+          const { product, contact, goodsDetails } = data;
           // console.log('contact: ', contact);
           // const { category, createdAt, deliveryMethod, deliveryPeriod, description, imageURI, name, weight } = product;
           // console.log('metadata: ', data);
@@ -263,9 +327,10 @@ export const GoodsProvider = ({ children }: IContextProps) => {
             tokenId: tokenId.toNumber(),
             seller,
             owner,
-            tokenURI,
+            tokenURI: tokenUri,
             product,
             contact,
+            goodsDetails,
           };
         },
       ),
@@ -309,7 +374,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
           const { data: fetchData } = await axios.get<IFetchGoodsProps>(
             tokenURI,
           );
-          const { product, contact } = fetchData;
+          const { product, contact, goodsDetails } = fetchData;
           // eslint-disable-next-line no-underscore-dangle
           const price = ethers.utils.formatUnits(
             unformattedPrice.toString(),
@@ -324,6 +389,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
             tokenURI,
             product,
             contact,
+            goodsDetails,
           };
         },
       ),

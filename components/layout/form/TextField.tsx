@@ -44,6 +44,7 @@ const TextField = (props: ITextFieldProps) => {
                 )}
               </div>
             )}
+            className="bg-blue-500 text-white"
           >
             <Image
               src={images.info}

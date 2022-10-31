@@ -18,7 +18,11 @@ import GoodsTab, { IGeneralInfo } from './GoodsTab';
 // eslint-disable-next-line import/no-unresolved
 import { IContactDetailsProps } from '../../../types/contact.interface';
 // eslint-disable-next-line import/no-unresolved
-import { IGoodsDetailsQueryProps } from '../../../types/goods.interface';
+import {
+  IGoodsDetailsProps,
+  IGoodsDetailsQueryProps,
+  // eslint-disable-next-line import/no-unresolved
+} from '../../../types/goods.interface';
 
 type PaymentBodyCmpProps = {
   goods: IGoodsDetailsQueryProps;
@@ -87,7 +91,6 @@ const GoodsDetails = () => {
     contactAddress: '',
     contactEmail: '',
     contactMOC: '',
-    contactPhoneNo: undefined,
   });
   const {
     description,
@@ -108,6 +111,40 @@ const GoodsDetails = () => {
     contactEmail,
     contactMOC,
     contactPhoneNo,
+    // chicken
+    chickenType,
+    isChickenHormone,
+    // meat
+    meatType,
+    isMeatImported,
+    isMeatHormone,
+    meatImportedCountry,
+
+    // seafood
+    seafoodTypes,
+    typeOfFish,
+    isFishClean,
+    isFishFresh,
+    isFishHavePreservation,
+    typeOfCrustacea,
+    typeOfMollusca,
+
+    // vegetable
+    isVegImported,
+    isVegUseFertilizer,
+    isVegUsePesticide,
+    vegFertilizerType,
+    vegImportedCountry,
+    vegType,
+
+    // fruit
+    fruitImportedCountry,
+    fruitType,
+    isFruitFertilize,
+    isFruitImported,
+    isFruitUsePesticide,
+    isFruitUseWax,
+    whereFruitPlanted,
   } = goods;
   const generalInfo: IGeneralInfo = {
     description,
@@ -123,6 +160,45 @@ const GoodsDetails = () => {
     contactEmail,
     contactMOC,
     contactPhoneNo,
+  };
+
+  const goodsDetails: IGoodsDetailsProps = {
+    chicken: {
+      chickenType: chickenType || '',
+      isChickenHormone: isChickenHormone || '',
+    },
+    meat: {
+      meatType: meatType || '',
+      isMeatImported: isMeatImported || '',
+      isMeatHormone: isMeatHormone || '',
+      meatImportedCountry: meatImportedCountry || '',
+    },
+    seafood: {
+      seafoodTypes: seafoodTypes || '',
+      typeOfFish: typeOfFish || '',
+      isFishClean: isFishClean || '',
+      isFishFresh: isFishFresh || '',
+      isFishHavePreservation: isFishHavePreservation || '',
+      typeOfCrustacea: typeOfCrustacea || '',
+      typeOfMollusca: typeOfMollusca || '',
+    },
+    vegetable: {
+      vegType: vegType || '',
+      isVegUseFertilizer: isVegUseFertilizer || '',
+      vegFertilizerType: vegFertilizerType || '',
+      isVegImported: isVegImported || '',
+      vegImportedCountry: vegImportedCountry || '',
+      isVegUsePesticide: isVegUsePesticide || '',
+    },
+    fruit: {
+      fruitType: fruitType || '',
+      isFruitFertilize: isFruitFertilize || '',
+      isFruitImported: isFruitImported || '',
+      fruitImportedCountry: fruitImportedCountry || '',
+      whereFruitPlanted: whereFruitPlanted || '',
+      isFruitUsePesticide: isFruitUsePesticide || '',
+      isFruitUseWax: isFruitUseWax || '',
+    },
   };
   const [buyGoodsQuery, setBuyGoodsQuery] = useState<IBuyGoods>();
   const router = useRouter();
@@ -185,7 +261,11 @@ const GoodsDetails = () => {
           </div>
         </div>
         <div className="mt-10 flex flex-col">
-          <GoodsTab generalInfo={generalInfo} contactInfo={contactInfo} />
+          <GoodsTab
+            generalInfo={generalInfo}
+            contactInfo={contactInfo}
+            goodsDetails={goodsDetails}
+          />
         </div>
         <div className="flex flex-row sm:flex-col mt-10">
           {currentAccount === seller.toLowerCase() ? (

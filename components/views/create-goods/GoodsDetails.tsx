@@ -60,7 +60,7 @@ const MeatFieldForm = ({ IsMeatImportAns }: IMeatProps) => (
   <>
     <FormikControl
       control="selectField"
-      label="What type of meat ?"
+      label="Meat type"
       name="meatAnimalTypes"
       options={meatAnimalTypes}
       type={FieldType.TEXT}
@@ -160,7 +160,7 @@ const SeafoodFieldForm = ({ seafoodTypesAns }: ISeafoodProps) => (
       <>
         <FormikControl
           control="selectField"
-          label="List of fish"
+          label="Fish type"
           name="fishList"
           options={fishLists}
           type={FieldType.TEXT}
@@ -191,7 +191,7 @@ const SeafoodFieldForm = ({ seafoodTypesAns }: ISeafoodProps) => (
     {seafoodTypesAns === 'mollusca' && (
       <FormikControl
         control="selectField"
-        label="List of mollusca"
+        label="Mollusca types"
         name="molluscaList"
         options={molluscaLists}
         type={FieldType.TEXT}
@@ -200,7 +200,7 @@ const SeafoodFieldForm = ({ seafoodTypesAns }: ISeafoodProps) => (
     {seafoodTypesAns === 'crustacea' && (
       <FormikControl
         control="selectField"
-        label="List of crustacea"
+        label="Crustacea types"
         name="crustaceaList"
         options={crustaceaLists}
         type={FieldType.TEXT}
@@ -209,4 +209,164 @@ const SeafoodFieldForm = ({ seafoodTypesAns }: ISeafoodProps) => (
   </>
 );
 
-export { ChickenFieldForm, MeatFieldForm, SeafoodFieldForm };
+//  fish catch opt
+const vegLists: IOptionsProps[] = [
+  { key: 'Select one', value: '' },
+  { key: 'Spinach', value: 'spinach' },
+  { key: 'Sweet Shoot', value: 'sweet_shoot' },
+  { key: 'Spring Onion', value: 'spring_onion' },
+  { key: 'Chinese Kale', value: 'chinese_kale' },
+  { key: 'Water Spinach', value: 'water_spinach' },
+  { key: 'Cabbage', value: 'cabbage' },
+  { key: 'Chinese Cabbage', value: 'chinese_cabbage' },
+  { key: 'Lettuce', value: 'lettuce' },
+  { key: 'Leaf Mustard', value: 'leaf_mustard' },
+];
+
+const vegTypeOfFertilizer: IOptionsProps[] = [
+  { key: 'Select one', value: '' },
+  { key: 'Organic', value: 'organic' },
+  { key: 'Chemical', value: 'chemical' },
+];
+
+interface IVegetableProps {
+  vegIsFertilizerUsedAns: string;
+  isVegImportAns: string;
+}
+
+const VegetableForm = ({
+  vegIsFertilizerUsedAns,
+  isVegImportAns,
+}: IVegetableProps) => (
+  <>
+    <FormikControl
+      control="selectField"
+      label="Vegetable types"
+      name="vegList"
+      options={vegLists}
+      type={FieldType.TEXT}
+    />
+    <FormikControl
+      control="selectField"
+      label="Did the product use any fertilizer?"
+      name="vegFertilizer"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+    {vegIsFertilizerUsedAns && vegIsFertilizerUsedAns === 'true' && (
+      <FormikControl
+        control="selectField"
+        label="Type of fertilizer"
+        name="vegTypeOfFertilizer"
+        options={vegTypeOfFertilizer}
+        type={FieldType.TEXT}
+      />
+    )}
+    <FormikControl
+      control="selectField"
+      label="Does the vegetable imported ?"
+      name="vegImport"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+    {isVegImportAns && isVegImportAns === 'true' && (
+      <FormikControl
+        control="textField"
+        label="What country does the vegetable imported from ?"
+        name="vegCountryImport"
+        type={FieldType.TEXT}
+      />
+    )}
+    <FormikControl
+      control="selectField"
+      label="Does the vegetable used any pesticides?"
+      name="vegPesticide"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+  </>
+);
+
+interface IFruitProps {
+  // vegIsFertilizerUsedAns: string;
+  isFruitImportAns: string;
+}
+
+const fruitLists: IOptionsProps[] = [
+  { key: 'Select one', value: '' },
+  { key: 'Watermelon', value: 'watermelon' },
+  { key: 'Grape', value: 'grape' },
+  { key: 'Apple', value: 'apple' },
+  { key: 'Strawberry', value: 'strawberry' },
+  { key: 'Pineapple', value: 'pineapple' },
+  { key: 'Dragon Fruit', value: 'dragon_fruit' },
+  { key: 'Guava', value: 'guava' },
+  { key: 'Mango', value: 'mango' },
+  { key: 'Rambutan', value: 'rambutan' },
+  { key: 'Star Fruit', value: 'star_fruit' },
+  // ciku
+  { key: 'Sapodilla', value: 'sapodilla' },
+  { key: 'Durian', value: 'durian' },
+];
+
+const FruitForm = ({ isFruitImportAns }: IFruitProps) => (
+  <>
+    <FormikControl
+      control="selectField"
+      label="Fruit types"
+      name="fruitList"
+      options={fruitLists}
+      type={FieldType.TEXT}
+    />
+    <FormikControl
+      control="selectField"
+      label="Did the product use any fertilizer?"
+      name="fruitFertilizer"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+    <FormikControl
+      control="selectField"
+      label="Does the fruit imported ?"
+      name="fruitImport"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+    {isFruitImportAns && isFruitImportAns === 'true' && (
+      <FormikControl
+        control="textField"
+        label="What country does the fruit imported from ?"
+        name="fruitCountryImport"
+        type={FieldType.TEXT}
+      />
+    )}
+    <FormikControl
+      control="textField"
+      label="Where does the fruit being planted ?"
+      name="fruitPlant"
+      type={FieldType.TEXT}
+    />
+    <FormikControl
+      control="selectField"
+      label="Does the fruit used any pesticides ?"
+      name="fruitPesticide"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+    <FormikControl
+      control="selectField"
+      label="Does the fruit used any wax?"
+      name="fruitWax"
+      options={trueOrFalseQuestion}
+      type={FieldType.TEXT}
+    />
+  </>
+);
+
+export {
+  ChickenFieldForm,
+  MeatFieldForm,
+  SeafoodFieldForm,
+  VegetableForm,
+  FruitForm,
+};

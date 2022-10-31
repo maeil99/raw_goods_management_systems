@@ -1,13 +1,4 @@
-/* eslint-disable import/no-unresolved */
 /* eslint-disable no-unused-vars */
-
-import { BigNumber } from 'ethers';
-import { IChickenProps } from './chicken.interface';
-import { IContactDetailsProps } from './contact.interface';
-import { IMeatProps } from './meat.interface';
-import { IProductProps } from './product.interface';
-
-/* eslint-disable no-shadow */
 export interface IFormFieldProps {
   productName: string;
   productCategory: string;
@@ -19,7 +10,6 @@ export interface IFormFieldProps {
   productPicLink: string | null;
 
   // contact details
-  // TODO un comment later
   contactName: string;
   contactAddress: string;
   contactEmail: string;
@@ -27,24 +17,45 @@ export interface IFormFieldProps {
   contactPhoneNo?: string;
 
   // chicken details
-  // TODO un comment later
-  // chickenOption?: string;
-  // chickenHormone?: string;
+  chickenOption?: string;
+  chickenHormone?: string;
 
   // meat details
-  // TODO un comment later
-  // meatAnimalTypes?: string;
-  // meatImport?: boolean;
-  // meatCountryImport?: string;
-  // meatHormone?: string;
+  meatAnimalTypes?: string;
+  meatImport?: string;
+  meatCountryImport?: string;
+  meatHormone?: string;
 
-  // TODO un comment later
   // seafood details
-  // seafoodTypes?: string;
+  seafoodTypes?: string;
+  fishList?: string;
+  fishFresh?: string;
+  fishClean?: string;
+  fishPreservation?: string;
+  molluscaList?: string;
+  crustaceaList?: string;
+
+  // vegetables
+  vegList?:string;
+  vegFertilizer?:string;
+  vegTypeOfFertilizer?:string;
+  vegImport?:string,
+  vegCountryImport?:string,
+  vegPesticide?:string;
+
+  // fruit
+  fruitList?:string;
+  fruitFertilizer?:string;
+  fruitImport?:string;
+  fruitCountryImport?:string;
+  fruitPlant?:string;
+  fruitPesticide?:string;
+  fruitWax?:string;
 
   createdAt: string;
 }
 
+// eslint-disable-next-line no-shadow
 export enum FieldType {
   TEXT = 'text',
   PASSWORD = 'password',
@@ -77,9 +88,3 @@ export interface IOptionsProps {
   key: string;
   value: string | number | readonly string[];
 }
-
-// export interface ISubmitForm {
-//   product: IProductProps;
-//   contactDetails: IContactDetailsProps;
-//   productDetails: IChickenProps | IMeatProps;
-// }

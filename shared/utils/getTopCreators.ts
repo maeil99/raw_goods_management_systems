@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { IFormattedGoods } from '../../types/product.interface';
+import { IFormattedGoods } from '../../types/goods.interface';
 
 export interface ITopCreator {
   seller: string;
