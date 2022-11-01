@@ -288,6 +288,7 @@ const CreateGoods = () => {
                         setIsContactPage(true);
                         setIsProductPage(false);
                       }}
+                      useDefaultTheme
                     />
                   </div>
                 </>
@@ -304,6 +305,7 @@ const CreateGoods = () => {
                         setIsContactPage(false);
                         setIsProductPage(true);
                       }}
+                      useDefaultTheme
                     />
                     <Button
                       btnName="Next"
@@ -315,6 +317,7 @@ const CreateGoods = () => {
                         setIsProductPage(false);
                         setIsProductDetailsPage(true);
                       }}
+                      useDefaultTheme
                     />
                   </div>
                   {formik.values.productCategory === '' && (
@@ -367,6 +370,7 @@ const CreateGoods = () => {
                         setIsProductDetailsPage(false);
                         setIsContactPage(true);
                       }}
+                      useDefaultTheme
                     />
                     {!formik.isValid ? (
                       <ToolTip
@@ -388,6 +392,7 @@ const CreateGoods = () => {
                           classStyles="rounded-xl"
                           btnType="submit"
                           disabled={!formik.isValid}
+                          useDefaultTheme
                         />
                       </ToolTip>
                     ) : (
@@ -396,6 +401,7 @@ const CreateGoods = () => {
                         classStyles="rounded-xl"
                         btnType="submit"
                         disabled={!formik.isValid}
+                        useDefaultTheme
                       />
                     )}
                   </div>

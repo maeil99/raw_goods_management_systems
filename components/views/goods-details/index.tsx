@@ -280,6 +280,7 @@ const GoodsDetails = () => {
               handleClick={() => router.push(
                 `/resell-goods?tokenId=${tokenId}&tokenURI=${tokenURI}`,
               )}
+              useDefaultTheme
             />
           ) : (
             <Button
@@ -293,6 +294,7 @@ const GoodsDetails = () => {
                 });
                 setPaymentModal(true);
               }}
+              useDefaultTheme
             />
           )}
         </div>
@@ -309,12 +311,14 @@ const GoodsDetails = () => {
                 btnName="Checkout"
                 classStyles="mr-5 sm:mb-5 sm:mr-0 rounded-xl"
                 handleClick={checkout}
+                useDefaultTheme
               />
               <Button
                 btnType="button"
                 btnName="Cancel"
                 classStyles="rounded-xl"
                 handleClick={() => setPaymentModal(false)}
+                useDefaultTheme
               />
             </div>
           )}
@@ -351,6 +355,7 @@ const GoodsDetails = () => {
                 btnType="button"
                 classStyles="sm:mr-0 sm:mb-5 rounded-xl"
                 handleClick={() => router.push('/my-goods')}
+                useDefaultTheme
               />
             </div>
           )}

@@ -54,7 +54,7 @@ const Footer = () => (
             className="h-full flex-1 w-full dark:bg-nft-black-2 bg-white px-4 rounded-md font-poppins dark:text-white text-nft-black-1 font-normal text-xs minlg:text-lg outline-none"
           />
           <div className="flex-initial">
-            <Button btnName="Email me" classStyles="rounded-md" btnType="button" />
+            <Button btnName="Email me" classStyles="rounded-md" btnType="button" useDefaultTheme />
           </div>
         </div>
       </div>

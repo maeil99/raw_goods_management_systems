@@ -64,6 +64,7 @@ const ResellGoods:NextPage = () => {
             btnName="List Goods"
             classStyles="rounded-xl"
             handleClick={resell}
+            useDefaultTheme
           />
         </div>
       </div>

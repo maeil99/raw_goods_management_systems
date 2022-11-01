@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import removeUnderscore from '../../../shared/utils/removeUnderscore';
@@ -7,6 +8,8 @@ import { IContactDetailsProps } from '../../../types/contact.interface';
 import { IGoodsDetailsProps } from '../../../types/goods.interface';
 // eslint-disable-next-line import/no-unresolved
 import BareButton from '../../BareButton';
+// eslint-disable-next-line import/no-unresolved
+import Button from '../../Button';
 
 export interface IGeneralInfo {
   weight: string;
@@ -47,25 +50,30 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
   };
   const createdAt = new Date(generalInfo.createdAt);
   console.log({ currentTab });
+  const router = useRouter();
 
   return (
     <>
-      <div className="w-full border-b dark:border-nft-black-1 border-nft-gray-1 flex flex-row pb-1">
-        <BareButton
-          btnName="General Info"
-          btnType="button"
-          handleClick={() => generateTab('general')}
-        />
-        <BareButton
-          btnName="Contact Info"
-          btnType="button"
-          handleClick={() => generateTab('contact')}
-        />
-        <BareButton
-          btnName="Goods Details"
-          btnType="button"
-          handleClick={() => generateTab('product')}
-        />
+      <div className="w-full border-b dark:border-nft-black-1 border-nft-gray-1 flex flex-row pb-2 justify-between">
+        <div>
+          <BareButton
+            btnName="General Info"
+            btnType="button"
+            handleClick={() => generateTab('general')}
+          />
+          <BareButton
+            btnName="Contact Info"
+            btnType="button"
+            handleClick={() => generateTab('contact')}
+          />
+          <BareButton
+            btnName="Goods Details"
+            btnType="button"
+            handleClick={() => generateTab('product')}
+          />
+        </div>
+
+        <Button btnName="Report This Product" btnType="button" handleClick={() => router.push('/report-a-seller')} classStyles="rounded-xl mx-2 bg-red-500" />
       </div>
       {currentTab === 'general' && generalInfo && (
         <div className="px-2 mt-3 flex flex-row space-x-2 text-sm minlg:text-lg">
