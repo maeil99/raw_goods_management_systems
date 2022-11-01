@@ -79,6 +79,10 @@ const dedicatedEndPoint = process.env.NODE_ENV === 'development'
   ? process.env.NEXT_PUBLIC_DEDICATED_GATEWAY_DEV
   : 'https://rgsm-dev.infura-ipfs.io';
 
+const rpcUrl = process.env.NODE_ENV === 'development'
+  ? process.env.NEXT_PUBLIC_ALCHEMY_API_URL
+  : 'https://eth-goerli.g.alchemy.com/v2/5UN4579oCmhZgvlQVhd-JHcH_CcQKn4Y';
+
 const fetchContract = (
   signerOrProvider:
     | ethers.providers.JsonRpcSigner
@@ -302,7 +306,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
 
   // fetch all goods available in marketplace
   const fetchGoods = async (): Promise<IFormattedGoods[]> => {
-    const provider = new ethers.providers.JsonRpcProvider();
+    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
     const contract = fetchContract(provider);
     const rawData = await contract.fetchMarketItems();
 
