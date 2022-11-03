@@ -265,6 +265,9 @@ const GoodsDetails = () => {
             generalInfo={generalInfo}
             contactInfo={contactInfo}
             goodsDetails={goodsDetails}
+            tokenURI={goods.tokenURI}
+            seller={goods.seller}
+            tokenId={goods.tokenId}
           />
         </div>
         <div className="flex flex-row sm:flex-col mt-10">
