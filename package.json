@@ -12,13 +12,14 @@
     "test:cov": "jest --coverage"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@openzeppelin/contracts": "^4.7.3",
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
     "ethers": "^5.7.0",
+    "firebase": "^9.13.0",
     "formik": "^2.2.9",
     "hardhat": "^2.11.1",
     "ipfs-http-client": "^58.0.0",
