@@ -8,12 +8,16 @@ export interface IFirebaseConfigProps {
 }
 
 export interface IFirebaseCollectionProps {
-    databaseCollection:string,
-    _query?: string[],
-    _orderBy?:any,
+  databaseCollection: string;
+  _query?: string[];
+  _orderBy?: any;
 }
 
 export interface IReportUserProps {
-    id:string,
-    comment?:string
+  id: string;
+  comment?: string[];
+  seller?: string;
+  numberOfReport?: number;
+  tokenURI?: string;
+  tokenId?: string;
 }

@@ -11,12 +11,34 @@ import Loader from '../../Loader';
 import Button from '../../Button';
 import FormikControl from '../../layout/form/FormikControl';
 import { FieldType } from '../../../types/form.interface';
+import { useCollection } from '../../../shared/firebaseHooks/useCollection';
+import useFireStore from '../../../shared/firebaseHooks/useFirestore';
+
+interface ISubmitReportProps {
+  reportSeller: string;
+  reportTokenId: string;
+  reportTokenURI: string;
+  comment: string;
+  numberOfReport: number;
+}
+
+interface IUpdateProps {
+  comment?: string[];
+  seller: string;
+  numberOfReport: number;
+  tokenURI: string;
+  tokenId: string;
+  id: string;
+}
 
 const ReportASeller: NextPage = () => {
   const router = useRouter();
   const { seller, tokenURI, tokenId } = router.query;
   const [image, setImage] = useState('');
   const [isLoadingGoods, setIsLoadingGoods] = useState<boolean>(true);
+
+  const allReportedData = useCollection({ databaseCollection: 'report' });
+  console.log('all reported seller: ', allReportedData);
 
   console.log('sent this data later: ', seller, tokenURI, tokenId);
 
@@ -42,15 +64,73 @@ const ReportASeller: NextPage = () => {
     );
   }
 
-  const initialValue = {
-    seller,
-    tokenId,
-    tokenURI,
-    comment: '',
+  const addData = async (values: ISubmitReportProps) => {
+    const {
+      comment,
+      reportSeller,
+      reportTokenId,
+      reportTokenURI,
+      numberOfReport,
+    } = values;
+    console.log('number of report: ', numberOfReport);
+    const newComment: string[] = [];
+    const addNewComment = newComment.concat(comment);
+    await useFireStore({
+      collectionName: 'report',
+      method: 'add',
+      data: {
+        seller: reportSeller,
+        numberOfReport: numberOfReport + 1,
+        tokenId: reportTokenId,
+        tokenURI: reportTokenURI,
+        comment: addNewComment,
+      },
+    });
   };
 
-  const onSubmit = (values: any) => {
+  const updateData = async (findSeller: IUpdateProps, newComment: string) => {
+    const attachNewComment = findSeller.comment?.concat(newComment);
+    await useFireStore({
+      collectionName: 'report',
+      method: 'update',
+      dataId: findSeller.id,
+      data: {
+        ...findSeller,
+        numberOfReport: findSeller.numberOfReport + 1,
+        comment: attachNewComment,
+      },
+    });
+  };
+
+  const initialValue: ISubmitReportProps = {
+    reportSeller: seller as string,
+    reportTokenId: tokenId as string,
+    reportTokenURI: tokenURI as string,
+    comment: '',
+    numberOfReport: 0,
+  };
+
+  const onSubmit = (values: ISubmitReportProps) => {
     console.log(values);
+    const findSeller = allReportedData.documents?.find(
+      (data) => data.seller === values.reportSeller
+        && data.tokenId === values.reportTokenId,
+    );
+    if (findSeller === undefined) {
+      addData(values).then(() => router.push('/'));
+    } else {
+      updateData(
+        {
+          id: findSeller.id,
+          numberOfReport: findSeller.numberOfReport || 0,
+          seller: findSeller.seller || '',
+          tokenId: findSeller.tokenId || '',
+          tokenURI: findSeller.tokenId || '',
+          comment: findSeller.comment,
+        },
+        values.comment,
+      ).then(() => router.push('/'));
+    }
   };
 
   return (
@@ -95,7 +175,6 @@ const ReportASeller: NextPage = () => {
                 </div>
 
                 <div className="mt-7 w-full flex justify-between">
-
                   <Button
                     btnName="Cancel Report"
                     classStyles="rounded-xl"

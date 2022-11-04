@@ -1,28 +1,52 @@
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 // eslint-disable-next-line import/no-unresolved
 import { db } from '../../firebase/firebaseConfig';
 
 interface IAddDataProps {
-  comment?: string;
+  comment?: string[];
+  seller: string;
+  numberOfReport: number;
+  tokenURI: string;
+  tokenId: string;
 }
 
 interface IFireStoreProps {
   collectionName: string;
-  method: 'add' | 'delete';
+  method: 'add' | 'delete' | 'update';
   data?: IAddDataProps;
-  deleteId?:string;
+  // needs this id for delete and update
+  dataId?: string;
 }
 
-const useFirestore = async ({ collectionName, method, data, deleteId }: IFireStoreProps) => {
+const useFireStore = async ({
+  collectionName,
+  method,
+  data,
+  dataId,
+}: IFireStoreProps) => {
   if (method === 'add') {
+    if (!data) return;
     const ref = collection(db, collectionName);
-    await addDoc(ref, {
+    await addDoc(ref, data);
+  } else if (method === 'delete') {
+    if (!dataId) return;
+    const ref = doc(db, collectionName, dataId);
+    await deleteDoc(ref);
+  } else {
+    if (!dataId) return;
+    const ref = doc(db, collectionName, dataId);
+    console.log('data for update: ', data);
+    await updateDoc(ref, {
+      ...data,
       comment: data?.comment,
     });
-  } else if (method === 'delete' && deleteId) {
-    const ref = doc(db, collectionName, deleteId);
-    await deleteDoc(ref);
   }
 };
 
-export default useFirestore;
+export default useFireStore;
