@@ -44,7 +44,6 @@ const useFireStore = async ({
     console.log('data for update: ', data);
     await updateDoc(ref, {
       ...data,
-      comment: data?.comment,
     });
   }
 };
