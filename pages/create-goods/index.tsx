@@ -2,12 +2,8 @@
 import type { NextPage } from 'next';
 import CreateGoods from '../../components/views/create-goods';
 
-const CreateGoodsLayout:NextPage = () => {
-  const none = '';
-  console.log(none);
-  return (
-    <CreateGoods />
-  );
-};
+const CreateGoodsLayout:NextPage = () => (
+  <CreateGoods />
+);
 
 export default CreateGoodsLayout;

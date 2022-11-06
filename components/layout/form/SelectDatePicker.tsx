@@ -13,7 +13,7 @@ const SelectDatePicker = (props:IFormikProps) => {
       <label htmlFor={name}>{label}</label>
       <Field name={name}>
         {({ field, form }: any) => {
-          console.log('Field: ', field, <br />, 'Form: ', form);
+          // console.log('Field: ', field, <br />, 'Form: ', form);
           const { setFieldValue } = form;
           const { value } = field;
           return (

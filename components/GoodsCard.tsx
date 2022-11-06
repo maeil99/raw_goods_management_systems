@@ -35,7 +35,7 @@ const GoodsCard = ({ goods, index, onProfilePage }: GoodsCardProps) => {
     goodsDetails,
   } = goods;
   const { chicken, meat, seafood, vegetable, fruit } = goodsDetails;
-  console.log('product from goods card: ', goods);
+  // console.log('product from goods card: ', goods);
   return (
     <Link
       href={{

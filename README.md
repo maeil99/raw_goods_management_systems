@@ -15,3 +15,4 @@ npx hardhat run scripts/deploy.ts
 npm run dev
 npx hardhat node
 npx hardhat run .\scripts\deploy.ts --network localhost
+firebase init

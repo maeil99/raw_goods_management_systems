@@ -215,7 +215,7 @@ const GoodsDetails = () => {
     return <Loader />;
   }
 
-  console.log('goods: ', { goods });
+  // console.log('goods: ', { goods });
 
   const checkout = async () => {
     if (!buyGoods || !buyGoodsQuery) return;
@@ -265,6 +265,9 @@ const GoodsDetails = () => {
             generalInfo={generalInfo}
             contactInfo={contactInfo}
             goodsDetails={goodsDetails}
+            tokenURI={goods.tokenURI}
+            seller={goods.seller}
+            tokenId={goods.tokenId}
           />
         </div>
         <div className="flex flex-row sm:flex-col mt-10">
