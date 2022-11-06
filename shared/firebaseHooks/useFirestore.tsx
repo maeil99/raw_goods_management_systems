@@ -41,7 +41,7 @@ const useFireStore = async ({
   } else {
     if (!dataId) return;
     const ref = doc(db, collectionName, dataId);
-    console.log('data for update: ', data);
+    // console.log('data for update: ', data);
     await updateDoc(ref, {
       ...data,
     });

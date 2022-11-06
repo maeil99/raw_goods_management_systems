@@ -256,8 +256,8 @@ const CreateGoods = () => {
   // submit
   const onSubmit = (values: IFormFieldProps) => {
     const { productPicLink } = values;
-    console.log(`link gambar: ${productPicLink}`);
-    console.log({ values });
+    // console.log(`link gambar: ${productPicLink}`);
+    // console.log({ values });
 
     if (!createGoods || productPicLink === null) return;
     createGoods(values, productPicLink, router);

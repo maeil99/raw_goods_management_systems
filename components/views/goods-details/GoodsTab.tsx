@@ -32,9 +32,9 @@ interface IGoodsTabProps {
 const GoodsTab = (productInfo: IGoodsTabProps) => {
   const { generalInfo, contactInfo, goodsDetails, seller, tokenURI, tokenId } = productInfo;
   const [currentTab, setCurrentTab] = useState<string>('general');
-  console.log('general info: ', generalInfo);
-  console.log('contact info: ', contactInfo);
-  console.log('goods details: ', goodsDetails);
+  // console.log('general info: ', generalInfo);
+  // console.log('contact info: ', contactInfo);
+  // console.log('goods details: ', goodsDetails);
   const generateTab = (i: string) => {
     switch (i) {
       case 'general':
@@ -52,7 +52,7 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
     }
   };
   const createdAt = new Date(generalInfo.createdAt);
-  console.log({ currentTab });
+  // console.log({ currentTab });
   const router = useRouter();
 
   return (

@@ -38,9 +38,9 @@ const ReportASeller: NextPage = () => {
   const [isLoadingGoods, setIsLoadingGoods] = useState<boolean>(true);
 
   const allReportedData = useCollection({ databaseCollection: 'report' });
-  console.log('all reported seller: ', allReportedData);
+  // console.log('all reported seller: ', allReportedData);
 
-  console.log('sent this data later: ', seller, tokenURI, tokenId);
+  // console.log('sent this data later: ', seller, tokenURI, tokenId);
 
   const fetchGoods = async () => {
     if (!tokenURI) return;
@@ -72,7 +72,7 @@ const ReportASeller: NextPage = () => {
       reportTokenURI,
       numberOfReport,
     } = values;
-    console.log('number of report: ', numberOfReport);
+    // console.log('number of report: ', numberOfReport);
     const newComment: string[] = [];
     const addNewComment = newComment.concat(comment);
     await useFireStore({
@@ -111,7 +111,7 @@ const ReportASeller: NextPage = () => {
   };
 
   const onSubmit = (values: ISubmitReportProps) => {
-    console.log(values);
+    // console.log(values);
     const findSeller = allReportedData.documents?.find(
       (data) => data.seller === values.reportSeller
         && data.tokenId === values.reportTokenId,

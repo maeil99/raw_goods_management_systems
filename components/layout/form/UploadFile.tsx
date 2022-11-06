@@ -72,7 +72,7 @@ const UploadFile = ({
   const uploadImage = async () => {
     if (file === null || uploadToIPFS === undefined) return;
     const url = await uploadToIPFS(file);
-    console.log({ url });
+    // console.log({ url });
     setFieldValue('productPicLink', url);
   };
 

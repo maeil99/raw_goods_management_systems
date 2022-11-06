@@ -118,7 +118,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
 
       return data;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -131,7 +131,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     } else {
       console.log('No accounts found.');
     }
-    console.log({ accounts });
+    // console.log({ accounts });
   };
 
   useEffect(() => {
@@ -290,11 +290,11 @@ export const GoodsProvider = ({ children }: IContextProps) => {
         },
       },
     });
-    console.log('create goods data: ', data);
+    // console.log('create goods data: ', data);
     try {
       const added = await client.add(data);
       const url = `${dedicatedEndPoint}/ipfs/${added.path}`;
-      console.log('url from create goods ', url);
+      // console.log('url from create goods ', url);
       const price = productPrice.toString();
       await createSale(url, price);
       router.push('/');
@@ -313,7 +313,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     const items = await Promise.all(
       (rawData as IRawGoodsData[]).map(
         async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-          const tokenUri = await contract.tokenURI(tokenId);
+          const tokenUri:any = await contract.tokenURI(tokenId);
           // const metadata = await axios.get<IFetchGoodsProps>(tokenURI);
           const { data } = await axios.get<IFetchGoodsProps>(tokenUri);
           // console.log('metadata: ', metadata);
@@ -348,7 +348,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
     const contract = fetchContract(signer);
-    console.log('goods from buyGoods function: ', goods);
+    // console.log('goods from buyGoods function: ', goods);
     const price = ethers.utils.parseUnits(goods.goodsPrice.toString(), 'ether');
 
     const transaction = await contract.createMarketSale(goods.tokenId, {

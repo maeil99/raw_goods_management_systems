@@ -215,7 +215,7 @@ const GoodsDetails = () => {
     return <Loader />;
   }
 
-  console.log('goods: ', { goods });
+  // console.log('goods: ', { goods });
 
   const checkout = async () => {
     if (!buyGoods || !buyGoodsQuery) return;
