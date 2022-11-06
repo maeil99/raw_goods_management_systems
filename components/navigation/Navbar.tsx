@@ -27,6 +27,7 @@ const ButtonGroup = ({ setActive }: IButtonGroup) => {
         setActive('');
         router.push('/create-goods');
       }}
+      useDefaultTheme
     />
   ) : (
     <Button
@@ -34,6 +35,7 @@ const ButtonGroup = ({ setActive }: IButtonGroup) => {
       btnName="Connect"
       classStyles="mx-2 rounded-xl"
       handleClick={connectWallet}
+      useDefaultTheme
     />
   );
 };

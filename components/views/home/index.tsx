@@ -47,7 +47,7 @@ const Home: NextPage = () => {
       setIsLoading(false);
     });
   }, []);
-  console.log('items: ', listOfGoods);
+  // console.log('items: ', listOfGoods);
   useEffect(() => {
     const sortedGoods = [...listOfGoods];
 

@@ -2,12 +2,8 @@
 import type { NextPage } from 'next';
 import GoodsDetails from '../../components/views/goods-details';
 
-const GoodsDetailsLayout:NextPage = () => {
-  const none = '';
-  console.log(none);
-  return (
-    <GoodsDetails />
-  );
-};
+const GoodsDetailsLayout:NextPage = () => (
+  <GoodsDetails />
+);
 
 export default GoodsDetailsLayout;
