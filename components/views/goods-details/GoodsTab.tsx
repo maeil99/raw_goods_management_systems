@@ -89,9 +89,9 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
               handleClick={() => generateTab('report')}
             />
           )}
+          <Button btnName="Report This Product" btnType="button" handleClick={() => router.push(`/report-a-seller?tokenURI=${tokenURI}&seller=${seller}&tokenId=${tokenId}`)} classStyles="rounded-xl mx-2 bg-red-500 hover:shadow-lg" />
         </div>
 
-        <Button btnName="Report This Product" btnType="button" handleClick={() => router.push(`/report-a-seller?tokenURI=${tokenURI}&seller=${seller}&tokenId=${tokenId}`)} classStyles="rounded-xl mx-2 bg-red-500 hover:shadow-lg" />
       </div>
       {currentTab === 'general' && generalInfo && (
         <div className="px-2 mt-3 flex flex-row space-x-2 text-sm minlg:text-lg">
