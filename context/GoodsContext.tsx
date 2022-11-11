@@ -296,8 +296,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
       const url = `${dedicatedEndPoint}/ipfs/${added.path}`;
       // console.log('url from create goods ', url);
       const price = productPrice.toString();
-      await createSale(url, price);
-      router.push('/');
+      await createSale(url, price).then(() => router.push('/'));
     } catch (error) {
       console.log(error);
       console.log('Error uploading file to IPFS');
