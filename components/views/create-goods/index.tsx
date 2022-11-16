@@ -260,7 +260,7 @@ const CreateGoods = () => {
     // console.log({ values });
 
     if (!createGoods || productPicLink === null) return;
-    createGoods(values, productPicLink, router);
+    createGoods(values, productPicLink).then(() => router.push('/'));
   };
 
   return (
