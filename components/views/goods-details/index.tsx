@@ -268,6 +268,7 @@ const GoodsDetails = () => {
             tokenURI={goods.tokenURI}
             seller={goods.seller}
             tokenId={goods.tokenId}
+            currentAccount={currentAccount}
           />
         </div>
         <div className="flex flex-row sm:flex-col mt-10">
