@@ -60,6 +60,8 @@ const MenuItems = ({
         return '/listed-goods';
       case 2:
         return '/my-goods';
+      case 3:
+        return '/report';
       default:
         return '/';
     }
@@ -71,7 +73,7 @@ const MenuItems = ({
         isMobile && 'flex-col h-full'
       }`}
     >
-      {['Explore Goods', 'Listed Goods', 'My Goods'].map((item, i) => (
+      {['Explore Goods', 'Listed Goods', 'My Goods', 'Reported Seller'].map((item, i) => (
         <li
           key={i}
           onClick={() => {
