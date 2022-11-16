@@ -43,8 +43,8 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
     tokenId,
     currentAccount,
   } = productInfo;
-  console.log('current acc: ', currentAccount);
-  console.log('seller: ', seller);
+  // console.log('current acc: ', currentAccount);
+  // console.log('seller: ', seller);
   const [currentTab, setCurrentTab] = useState<string>('general');
   const listOfReport = useCollection({ databaseCollection: 'report' });
   const reportedProduct = listOfReport
@@ -378,7 +378,7 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
             <p>{reportedProduct.numberOfReport || 'NA'}</p>
             <ol>
               {reportedProduct.comment?.map((report, index) => (
-                <li>{`${index + 1}) ${report}`}</li>
+                <li key={index}>{`${index + 1}) ${report}`}</li>
               ))}
             </ol>
           </div>
