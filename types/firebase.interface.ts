@@ -20,5 +20,5 @@ export interface IReportUserProps {
   numberOfReport?: number;
   tokenURI?: string;
   tokenId?: string;
-  imageURI:string;
+  imageURI?:string;
 }
