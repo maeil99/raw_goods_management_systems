@@ -37,6 +37,7 @@ const ReportPage: NextPage = () => {
         setListOfSeller(sortedData);
         setListOfSellerCopy(sortedData);
         setIsLoadingGoods(false);
+        console.log('list of reported seller: ', listOfSeller);
       });
     }, 3000);
     return () => clearTimeout(timeOut);
@@ -71,14 +72,14 @@ const ReportPage: NextPage = () => {
 
   return (
     <div className="flex justify-center sm:px-4 p-12">
-      {listOfGoods && listOfGoods.length === 0 && (
+      {listOfSeller && listOfSeller.length === 0 && (
         <div className="flexCenter sm:p-4 p-16 min-h-screen">
           <h1 className="font-poppins dark:text-white text-nft-black-1 text-3xl font-extrabold">
             No Creator / Seller Reported
           </h1>
         </div>
       )}
-      {listOfGoods && listOfGoods.length > 0 && (
+      {listOfSeller && listOfSeller.length > 0 && (
         <div className="w-3/5 md:w-full sm:space-y-8 space-y-16">
           <h1 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-2xl">
             List of Reported Seller
