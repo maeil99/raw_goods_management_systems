@@ -48,7 +48,7 @@ const ResellGoods:NextPage = () => {
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-3/5 md:w-full">
-        <h1 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-2xl">Resell NFT</h1>
+        <h1 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-2xl">Resell Goods</h1>
         <Input
           inputType="number"
           title="Price"

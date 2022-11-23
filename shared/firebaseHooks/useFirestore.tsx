@@ -14,6 +14,7 @@ interface IAddDataProps {
   numberOfReport: number;
   tokenURI: string;
   tokenId: string;
+  imageURI:string;
 }
 
 interface IFireStoreProps {

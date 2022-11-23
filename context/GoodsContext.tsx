@@ -291,7 +291,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     try {
       const added = await client.add(data);
       const url = `${dedicatedEndPoint}/ipfs/${added.path}`;
-      // console.log('url from create goods ', url);
+      console.log('url from create goods ', url);
       const price = productPrice.toString();
       await createSale(url, price);
     } catch (error) {
