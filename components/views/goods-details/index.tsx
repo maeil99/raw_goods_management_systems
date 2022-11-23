@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 // eslint-disable-next-line import/no-unresolved
 import { shortenAddress } from '../../../shared/utils/shortenAddress';
 // eslint-disable-next-line import/no-unresolved
-import { GoodsContext, IBuyGoods } from '../../../context/GoodsContext';
+import { GoodsContext, IBuyGoods, ICryptoPrice } from '../../../context/GoodsContext';
 import Loader from '../../Loader';
 
 import images from '../../../assets';
@@ -23,6 +23,8 @@ import {
   IGoodsDetailsQueryProps,
   // eslint-disable-next-line import/no-unresolved
 } from '../../../types/goods.interface';
+// eslint-disable-next-line import/no-unresolved
+import ToolTip from '../../ToolTip';
 
 type PaymentBodyCmpProps = {
   goods: IGoodsDetailsQueryProps;
@@ -71,7 +73,8 @@ const PaymentBodyCmp = ({ goods, goodsCurrency }: PaymentBodyCmpProps) => (
   </div>
 );
 const GoodsDetails = () => {
-  const { currentAccount, goodsCurrency, buyGoods } = useContext(GoodsContext);
+  const { currentAccount, goodsCurrency, buyGoods, currentETHMarketPrice } = useContext(GoodsContext);
+  const [updateEthPrice, setUpdateEthPrice] = useState<ICryptoPrice>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [goods, setGoods] = useState<IGoodsDetailsQueryProps>({
     category: '',
@@ -207,8 +210,12 @@ const GoodsDetails = () => {
   const [successModal, setSuccessModal] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !currentETHMarketPrice) return;
     setGoods(router.query as unknown as IGoodsDetailsQueryProps);
+    currentETHMarketPrice().then((eth) => {
+      setUpdateEthPrice(eth);
+      setIsLoading(false);
+    });
     setIsLoading(false);
   }, [router.isReady]);
   if (isLoading) {
@@ -287,19 +294,32 @@ const GoodsDetails = () => {
               useDefaultTheme
             />
           ) : (
-            <Button
-              btnType="button"
-              btnName={`Buy for ${price} ${goodsCurrency}`}
-              classStyles="mr-5 sm:mr-0 rounded-xl"
-              handleClick={() => {
-                setBuyGoodsQuery({
-                  goodsPrice: goods.price,
-                  tokenId: goods.tokenId,
-                });
-                setPaymentModal(true);
-              }}
-              useDefaultTheme
-            />
+            <ToolTip
+              tooltip={(
+                <div className="flex flex-col text-white sm:font-normal font-semibold text-sm">
+                  <p>{`1 ETH = RM ${updateEthPrice?.ETH.MYR}`}</p>
+                  {updateEthPrice && (
+                  <p>{`1 MYR = ${1 / updateEthPrice.ETH.MYR} ETH`}</p>
+                  )}
+                </div>
+            )}
+              className="bg-blue-500 text-white"
+            >
+              <Button
+                btnType="button"
+                btnName={`Buy for ${price} ${goodsCurrency}`}
+                classStyles="mr-5 sm:mr-0 rounded-xl"
+                handleClick={() => {
+                  setBuyGoodsQuery({
+                    goodsPrice: goods.price,
+                    tokenId: goods.tokenId,
+                  });
+                  setPaymentModal(true);
+                }}
+                useDefaultTheme
+              />
+            </ToolTip>
+
           )}
         </div>
       </div>
