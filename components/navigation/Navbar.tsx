@@ -103,6 +103,7 @@ const ButtonGroup = ({ setActive, router, setIsOpen }: ButtonGroupProps) => {
       btnName="Connect"
       classStyles="mx-2 rounded-xl"
       handleClick={connectWallet}
+      useDefaultTheme
     />
   );
 };
