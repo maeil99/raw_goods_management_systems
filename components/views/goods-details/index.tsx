@@ -342,7 +342,6 @@ const GoodsDetails = () => {
                 <Image src={goods.imageURI} objectFit="cover" layout="fill" />
               </div>
               <p className="font-poppins dark:text-white text-nft-black-1 text-sm minlg:text-xl font-normal mt-10">
-                {' '}
                 You successfully purchased{' '}
                 <span className="font-semibold">{goods.name}</span> from{' '}
                 <span className="font-semibold">
