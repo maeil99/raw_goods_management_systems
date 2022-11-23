@@ -29,6 +29,7 @@ interface IUpdateProps {
   tokenURI: string;
   tokenId: string;
   id: string;
+  imageURI:string;
 }
 
 const ReportASeller: NextPage = () => {
@@ -84,6 +85,7 @@ const ReportASeller: NextPage = () => {
         tokenId: reportTokenId,
         tokenURI: reportTokenURI,
         comment: addNewComment,
+        imageURI: image,
       },
     });
   };
@@ -127,6 +129,7 @@ const ReportASeller: NextPage = () => {
           tokenId: findSeller.tokenId || '',
           tokenURI: findSeller.tokenId || '',
           comment: findSeller.comment,
+          imageURI: findSeller.imageURI || '',
         },
         values.comment,
       ).then(() => router.push('/'));

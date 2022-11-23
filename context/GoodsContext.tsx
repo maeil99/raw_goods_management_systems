@@ -3,9 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Web3Modal from 'web3modal';
 import { BigNumber, ethers } from 'ethers';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { create as ipfsHTTPClient } from 'ipfs-http-client';
-import { NextRouter } from 'next/router';
 
 import { MarketAddress, MarketAddressABI } from './constant';
 import { IFormFieldProps } from '../types/form.interface';
@@ -49,7 +48,6 @@ interface ICreateContextProps {
   createGoods?: (
     formInput: IFormFieldProps,
     fileUrl: string,
-    router: NextRouter
   ) => Promise<void>;
   fetchGoods?: () => Promise<IFormattedGoods[]>;
   buyGoods?: (goods: IBuyGoods) => Promise<void>;
@@ -187,7 +185,6 @@ export const GoodsProvider = ({ children }: IContextProps) => {
   const createGoods = async (
     formInput: IFormFieldProps,
     fileUrl: string,
-    router: NextRouter,
   ) => {
     const {
       productName,
@@ -294,10 +291,9 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     try {
       const added = await client.add(data);
       const url = `${dedicatedEndPoint}/ipfs/${added.path}`;
-      // console.log('url from create goods ', url);
+      console.log('url from create goods ', url);
       const price = productPrice.toString();
       await createSale(url, price);
-      router.push('/');
     } catch (error) {
       console.log(error);
       console.log('Error uploading file to IPFS');
@@ -313,7 +309,7 @@ export const GoodsProvider = ({ children }: IContextProps) => {
     const items = await Promise.all(
       (rawData as IRawGoodsData[]).map(
         async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-          const tokenUri:any = await contract.tokenURI(tokenId);
+          const tokenUri: any = await contract.tokenURI(tokenId);
           // const metadata = await axios.get<IFetchGoodsProps>(tokenURI);
           const { data } = await axios.get<IFetchGoodsProps>(tokenUri);
           // console.log('metadata: ', metadata);

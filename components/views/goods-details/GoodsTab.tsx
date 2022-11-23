@@ -26,16 +26,35 @@ interface IGoodsTabProps {
   generalInfo: IGeneralInfo;
   contactInfo: IContactDetailsProps;
   goodsDetails: IGoodsDetailsProps;
-  tokenURI:string;
-  tokenId:string;
-  seller:string;
+  tokenURI: string;
+  tokenId: string;
+  seller: string;
+  currentAccount: string;
+
 }
 
 const GoodsTab = (productInfo: IGoodsTabProps) => {
-  const { generalInfo, contactInfo, goodsDetails, seller, tokenURI, tokenId } = productInfo;
+  const {
+    generalInfo,
+    contactInfo,
+    goodsDetails,
+    seller,
+    tokenURI,
+    tokenId,
+    currentAccount,
+  } = productInfo;
+  // console.log('current acc: ', currentAccount);
+  // console.log('seller: ', seller);
   const [currentTab, setCurrentTab] = useState<string>('general');
   const listOfReport = useCollection({ databaseCollection: 'report' });
+<<<<<<< HEAD
   const reportedProduct = listOfReport && listOfReport.documents?.find((prod) => prod.seller === seller && prod.tokenId === tokenId);
+=======
+  const reportedProduct = listOfReport
+    && listOfReport.documents?.find(
+      (prod) => prod.seller === seller && prod.tokenId === tokenId,
+    );
+>>>>>>> c5152ba8382e34cd2a2dd5a4da9813da1e4a6f6a
   // console.log('report prod: ', reportedProduct);
   // console.log('general info: ', generalInfo);
   // console.log('contact info: ', contactInfo);
@@ -89,9 +108,20 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
               handleClick={() => generateTab('report')}
             />
           )}
+<<<<<<< HEAD
+=======
+          {currentAccount !== seller.toLowerCase() && (
+            <Button
+              btnName="Report This Product"
+              btnType="button"
+              handleClick={() => router.push(
+                `/report-a-seller?tokenURI=${tokenURI}&seller=${seller}&tokenId=${tokenId}`,
+              )}
+              classStyles="rounded-xl mx-2 bg-red-500 hover:shadow-lg"
+            />
+          )}
+>>>>>>> c5152ba8382e34cd2a2dd5a4da9813da1e4a6f6a
         </div>
-
-        <Button btnName="Report This Product" btnType="button" handleClick={() => router.push(`/report-a-seller?tokenURI=${tokenURI}&seller=${seller}&tokenId=${tokenId}`)} classStyles="rounded-xl mx-2 bg-red-500 hover:shadow-lg" />
       </div>
       {currentTab === 'general' && generalInfo && (
         <div className="px-2 mt-3 flex flex-row space-x-2 text-sm minlg:text-lg">
@@ -345,6 +375,7 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
           </div>
       )}
       {currentTab === 'report' && reportedProduct && (
+<<<<<<< HEAD
       <div className="px-2 mt-3 flex flex-row space-x-2 text-sm minlg:text-lg">
         <div className="flex flex-col space-y-2 pb-2 font-poppins dark:text-white text-nft-black-1 font-semibold">
           <p>Number of reported case:</p>
@@ -360,6 +391,23 @@ const GoodsTab = (productInfo: IGoodsTabProps) => {
           </ol>
         </div>
       </div>
+=======
+        <div className="px-2 mt-3 flex flex-row space-x-2 text-sm minlg:text-lg">
+          <div className="flex flex-col space-y-2 pb-2 font-poppins dark:text-white text-nft-black-1 font-semibold">
+            <p>Number of reported case:</p>
+            <p>Comments:</p>
+          </div>
+
+          <div className="flex flex-col space-y-2 pb-2 font-poppins dark:text-white text-nft-black-1 font-normal">
+            <p>{reportedProduct.numberOfReport || 'NA'}</p>
+            <ol>
+              {reportedProduct.comment?.map((report, index) => (
+                <li key={index}>{`${index + 1}) ${report}`}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
+>>>>>>> c5152ba8382e34cd2a2dd5a4da9813da1e4a6f6a
       )}
     </>
   );
