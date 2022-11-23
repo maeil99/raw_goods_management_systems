@@ -71,43 +71,51 @@ const ReportPage: NextPage = () => {
 
   return (
     <div className="flex justify-center sm:px-4 p-12">
-      <div className="w-3/5 md:w-full sm:space-y-8 space-y-16">
-        <h1 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-2xl">
-          List of Reported Seller
-        </h1>
-        <ReportSearchBar
-          handleSearch={onHandleSearch}
-          clearSearch={onClearSearch}
-        />
-        <div className="py-2">
-          {listOfSeller.map((report) => {
-            if (!report.tokenId) return;
-            const filteredReportedGoods = listOfGoods.find(
-              (product) => product.tokenId === Number(report.tokenId),
-            );
-            // console.log('filtered prod: ', filteredReportedGoods);
-            return (
-              <div className="py-2" key={report.id}>
-                <ReportCard
-                  seller={report.seller || 'NA'}
-                  reportedCases={report.numberOfReport || 0}
-                  filteredGoods={filteredReportedGoods}
-                >
-                  <div className="flex flex-col pb-4">
-                    <p className="sm:font-medium font-semibold sm:text-sm text-lg">{`Product ID: ${report.tokenId || 'NA'}`}</p>
-                    <div className="flex justify-center">
-                      {report.imageURI && (
+      {listOfGoods && listOfGoods.length === 0 && (
+        <div className="flexCenter sm:p-4 p-16 min-h-screen">
+          <h1 className="font-poppins dark:text-white text-nft-black-1 text-3xl font-extrabold">
+            No Creator / Seller Reported
+          </h1>
+        </div>
+      )}
+      {listOfGoods && listOfGoods.length > 0 && (
+        <div className="w-3/5 md:w-full sm:space-y-8 space-y-16">
+          <h1 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-2xl">
+            List of Reported Seller
+          </h1>
+          <ReportSearchBar
+            handleSearch={onHandleSearch}
+            clearSearch={onClearSearch}
+          />
+          <div className="py-2">
+            {listOfSeller.map((report) => {
+              if (!report.tokenId) return;
+              const filteredReportedGoods = listOfGoods.find(
+                (product) => product.tokenId === Number(report.tokenId),
+              );
+              // console.log('filtered prod: ', filteredReportedGoods);
+              return (
+                <div className="py-2" key={report.id}>
+                  <ReportCard
+                    seller={report.seller || 'NA'}
+                    reportedCases={report.numberOfReport || 0}
+                    filteredGoods={filteredReportedGoods}
+                  >
+                    <div className="flex flex-col pb-4">
+                      <p className="sm:font-medium font-semibold sm:text-sm text-lg">{`Product ID: ${report.tokenId || 'NA'}`}</p>
+                      <div className="flex justify-center">
+                        {report.imageURI && (
                         <img
                           src={report.imageURI}
                           className="rounded mt-4"
                           width={350}
                         />
-                      )}
-                    </div>
-                    <div className="flex flex-col space-y-3 p-5   rounded-lg divide-y sm:text-sm text-lg">
-                      <p className="sm:font-medium font-semibold">Comments:</p>
-                      <div className="flex flex-col space-y-2 px-11 py-5">
-                        {report.comment
+                        )}
+                      </div>
+                      <div className="flex flex-col space-y-3 p-5   rounded-lg divide-y sm:text-sm text-lg">
+                        <p className="sm:font-medium font-semibold">Comments:</p>
+                        <div className="flex flex-col space-y-2 px-11 py-5">
+                          {report.comment
                           && report.comment.map((comment, i) => (
                             <div
                               key={i}
@@ -116,16 +124,18 @@ const ReportPage: NextPage = () => {
                               <p>{`${i + 1}) ${comment}`}</p>
                             </div>
                           ))}
+                        </div>
                       </div>
-                    </div>
 
-                  </div>
-                </ReportCard>
-              </div>
-            );
-          })}
+                    </div>
+                  </ReportCard>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
+
     </div>
   );
 };
